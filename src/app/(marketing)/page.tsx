@@ -4,7 +4,9 @@ import {
   Banknote,
   Bitcoin,
   Building2,
+  Crown,
   Gauge,
+  Gem,
   LineChart,
   Lock,
   ShieldCheck,
@@ -21,8 +23,16 @@ import { Reveal } from "@/components/ui/reveal";
 import { CountUp } from "@/components/ui/count-up";
 import { HeroVideo } from "@/components/marketing/hero-video";
 import { HeroRobot } from "@/components/marketing/hero-robot";
-import { RobotCard } from "@/components/marketing/robot-card";
-import { robots, howItWorks, site, REGISTRATION_FEE } from "@/lib/site";
+import { PackageCard } from "@/components/marketing/package-card";
+import {
+  packages,
+  goldenPackages,
+  diamondPackages,
+  howItWorks,
+  site,
+  REGISTRATION_FEE,
+  capitalReturnNote,
+} from "@/lib/site";
 import { formatUSD } from "@/lib/utils";
 
 export default function HomePage() {
@@ -63,8 +73,8 @@ export default function HomePage() {
                 >
                   Start Investing Now <ArrowRight className="h-4 w-4" />
                 </Link>
-                <Link href="/robots" className={buttonVariants({ variant: "outline", size: "lg" })}>
-                  View Robots
+                <Link href="/#packages" className={buttonVariants({ variant: "outline", size: "lg" })}>
+                  View Packages
                 </Link>
               </div>
 
@@ -87,20 +97,19 @@ export default function HomePage() {
               {/* Plans / packages card */}
               <div className="mt-7 max-w-md rounded-2xl border border-border bg-surface/70 p-4 backdrop-blur">
                 <p className="mb-3 text-[11px] font-semibold uppercase tracking-wider text-muted-2">
-                  Popular robot packages
+                  Popular packages
                 </p>
                 <ul className="space-y-2.5">
-                  {robots.map((r) => (
-                    <li key={r.slug} className="flex items-center justify-between gap-3">
+                  {[packages[0], packages[3], packages[7]].map((p) => (
+                    <li key={p.slug} className="flex items-center justify-between gap-3">
                       <span className="flex items-center gap-2.5">
                         <span className="grid h-7 w-7 place-items-center rounded-lg bg-primary-soft text-primary">
                           <TrendingUp className="h-3.5 w-3.5" />
                         </span>
-                        <span className="text-sm font-medium text-foreground">{r.name}</span>
+                        <span className="text-sm font-medium text-foreground">{p.name}</span>
                       </span>
                       <span className="text-xs text-muted">
-                        {r.monthlyReturnFloor}–{r.monthlyReturnFloor + r.monthlyReturnUpside}% / mo · from{" "}
-                        {formatUSD(r.minDeposit)}
+                        {formatUSD(p.deposit)} · {p.monthlyRoi}% / mo
                       </span>
                     </li>
                   ))}
@@ -154,28 +163,65 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* ─────────────────────── Robots ─────────────────────── */}
-      <section className="py-20 sm:py-24">
+      {/* ─────────────────────── Packages ─────────────────────── */}
+      <section id="packages" className="py-20 sm:py-24">
         <Container>
           <Reveal>
             <SectionHeading
-              eyebrow="Our robots"
-              title="Pick a robot, set your term, earn monthly"
-              subtitle="Each robot is live-traded by Blue Fox. Choose the risk level that suits you and lock in an 18 or 24-month contract."
+              eyebrow="Membership Packages"
+              title="Choose your Blue Fox bot"
+              subtitle={`A one-time $${REGISTRATION_FEE} registration, then pick a package. A fixed monthly ROI is paid to your wallet — withdraw anytime.`}
             />
           </Reveal>
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {robots.map((robot, i) => (
-              <Reveal key={robot.slug} delay={i * 0.1}>
-                <RobotCard robot={robot} />
-              </Reveal>
-            ))}
-          </div>
-          <div className="mt-10 text-center">
-            <Link href="/robots" className={buttonVariants({ variant: "ghost", size: "md" })}>
-              Compare all robots <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
+
+          {/* Golden tier */}
+          <Reveal>
+            <div className="mt-12">
+              <div className="flex items-center gap-3">
+                <span className="grid h-10 w-10 place-items-center rounded-xl bg-accent/15 text-accent">
+                  <Crown className="h-5 w-5" />
+                </span>
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground">Golden Packages</h3>
+                  <p className="text-xs text-muted">18-month contract · capital back in 3 parts</p>
+                </div>
+              </div>
+              <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                {goldenPackages.map((p, i) => (
+                  <Reveal key={p.slug} delay={i * 0.06}>
+                    <PackageCard pkg={p} />
+                  </Reveal>
+                ))}
+              </div>
+            </div>
+          </Reveal>
+
+          {/* Diamond tier */}
+          <Reveal>
+            <div className="mt-14">
+              <div className="flex items-center gap-3">
+                <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary-soft text-primary">
+                  <Gem className="h-5 w-5" />
+                </span>
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground">Diamond Packages</h3>
+                  <p className="text-xs text-muted">24-month contract · capital back in 3 parts</p>
+                </div>
+              </div>
+              <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                {diamondPackages.map((p, i) => (
+                  <Reveal key={p.slug} delay={i * 0.06}>
+                    <PackageCard pkg={p} />
+                  </Reveal>
+                ))}
+              </div>
+            </div>
+          </Reveal>
+
+          <p className="mx-auto mt-10 max-w-2xl text-center text-xs leading-relaxed text-muted-2">
+            {capitalReturnNote} Returns are generated by live forex trading and are
+            not guaranteed; capital is at risk.
+          </p>
         </Container>
       </section>
 
@@ -225,11 +271,11 @@ export default function HomePage() {
           </Reveal>
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {[
-              { icon: LineChart, title: "Monthly returns", text: "A clear monthly return — fixed floor plus performance upside — credited to your wallet every month." },
+              { icon: LineChart, title: "Fixed monthly ROI", text: "A fixed monthly ROI for your package — from 4% to 8% per month — credited straight to your wallet." },
               { icon: Wallet, title: "Withdraw your way", text: "Cash out in crypto, bank transfer or cash. Request from the portal; our team handles the rest." },
               { icon: ShieldCheck, title: "Verified trading", text: "Robot performance is tracked on MyFXBook/FXBlue. We invest your capital through live forex markets." },
               { icon: Lock, title: "Fixed-term contracts", text: "18 or 24-month contracts give the strategy room to compound. You always see your term progress." },
-              { icon: Gauge, title: "Risk you choose", text: "From conservative to aggressive — pick the robot that matches your appetite and minimum deposit." },
+              { icon: Gauge, title: "A package for every budget", text: "From $3,333 Golden to $55,555 Diamond — pick the package that matches your budget and goals." },
               { icon: Sparkles, title: "Full client portal", text: "Deposit, invest, track earnings, refer friends and withdraw — all from one modern dashboard." },
             ].map((f, i) => (
               <Reveal key={f.title} delay={(i % 3) * 0.08}>
@@ -252,9 +298,9 @@ export default function HomePage() {
           </Reveal>
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {[
-              { name: "Rashid A.", role: "Investor · Dubai", quote: "Deposited in USDT, chose Golden Fox, and my monthly return hits my wallet on time. Withdrew to cash twice without issues." },
+              { name: "Rashid A.", role: "Investor · Dubai", quote: "Deposited in USDT, chose the Bf Trader bot, and my monthly ROI hits my wallet on time. Withdrew to cash twice without issues." },
               { name: "Elena V.", role: "Investor · EU", quote: "I love that I don't have to touch MetaTrader. The dashboard shows exactly what I earn each month." },
-              { name: "James O.", role: "Investor · UK", quote: "Started small on Night Prowler to test it. Support answered on WhatsApp fast. Now on a 24-month contract." },
+              { name: "James O.", role: "Investor · UK", quote: "Started on the Bf Beginner bot to test it. Support answered on WhatsApp fast. Now on a Diamond 24-month contract." },
             ].map((t, i) => (
               <Reveal key={t.name} delay={i * 0.1}>
                 <figure className="flex h-full flex-col rounded-2xl border border-border bg-surface p-6">

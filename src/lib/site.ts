@@ -33,7 +33,7 @@ export const mainNav: NavItem[] = [
   { label: "About Us", href: "/about" },
   { label: "Privacy & Policy", href: "/legal/privacy" },
   { label: "Terms & Condition", href: "/legal/terms" },
-  { label: "Our Services", href: "/services" },
+  { label: "Our Services", href: "/#packages" },
   { label: "Contact Us", href: "/contact" },
 ];
 
@@ -41,7 +41,7 @@ export const footerNav: { title: string; links: NavItem[] }[] = [
   {
     title: "Platform",
     links: [
-      { label: "Our Robots", href: "/robots" },
+      { label: "Packages", href: "/#packages" },
       { label: "How it works", href: "/#how-it-works" },
       { label: "Live Results", href: "/results" },
       { label: "Referral Program", href: "/referrals" },
@@ -76,81 +76,45 @@ export const footerNav: { title: string; links: NavItem[] }[] = [
   },
 ];
 
-/** Sample robot catalogue — replaced by DB `Robot` records later. */
-export type Robot = {
+/** A Blue Fox bot package — fixed deposit + fixed monthly ROI over a term. */
+export type BotPackage = {
   slug: string;
   name: string;
-  tagline: string;
-  trades: string;
-  riskLevel: "Low" | "Medium" | "High";
-  /** Guaranteed monthly floor return (%). */
-  monthlyReturnFloor: number;
-  /** Additional variable upside on top of the floor (%). */
-  monthlyReturnUpside: number;
-  /** Contract terms offered (months). */
-  termMonths: number[];
-  minDeposit: number;
-  capacity: string;
-  badge?: string;
-  highlights: string[];
+  tier: "Golden" | "Diamond";
+  /** Fixed deposit amount (USD). */
+  deposit: number;
+  /** Fixed monthly return on investment (% per month). */
+  monthlyRoi: number;
+  /** Contract length in months. */
+  contractMonths: 18 | 24;
+  highlight?: boolean;
 };
 
-export const robots: Robot[] = [
-  {
-    slug: "night-prowler",
-    name: "Night Prowler",
-    tagline: "Low-risk capital protection",
-    trades: "EURUSD · GBPUSD",
-    riskLevel: "Low",
-    monthlyReturnFloor: 4,
-    monthlyReturnUpside: 2,
-    termMonths: [18, 24],
-    minDeposit: 500,
-    capacity: "Open",
-    badge: "Safest",
-    highlights: [
-      "Conservative scalping strategy",
-      "Strict drawdown limits",
-      "Ideal for first-time investors",
-    ],
-  },
-  {
-    slug: "golden-fox",
-    name: "Golden Fox",
-    tagline: "Balanced growth on gold",
-    trades: "XAUUSD (Gold)",
-    riskLevel: "Medium",
-    monthlyReturnFloor: 6,
-    monthlyReturnUpside: 3,
-    termMonths: [18, 24],
-    minDeposit: 1000,
-    capacity: "Open",
-    badge: "Most popular",
-    highlights: [
-      "Trend + breakout system on gold",
-      "Best balance of risk & reward",
-      "Most chosen by our clients",
-    ],
-  },
-  {
-    slug: "apex-hunter",
-    name: "Apex Hunter",
-    tagline: "Aggressive growth engine",
-    trades: "Majors + Indices",
-    riskLevel: "High",
-    monthlyReturnFloor: 8,
-    monthlyReturnUpside: 4,
-    termMonths: [18, 24],
-    minDeposit: 5000,
-    capacity: "Limited",
-    badge: "Highest return",
-    highlights: [
-      "Momentum multi-pair strategy",
-      "Higher target returns",
-      "For experienced investors",
-    ],
-  },
+/** The real Blue Fox bot packages. */
+export const packages: BotPackage[] = [
+  // 🥇 Golden — 18-month contract
+  { slug: "bf-beginner", name: "Bf Beginner Bot", tier: "Golden", deposit: 3333, monthlyRoi: 4, contractMonths: 18 },
+  { slug: "bf-trader", name: "Bf Trader Bot", tier: "Golden", deposit: 5555, monthlyRoi: 4.5, contractMonths: 18 },
+  { slug: "bf-ex-trader", name: "Bf Ex. Trader Bot", tier: "Golden", deposit: 7777, monthlyRoi: 5, contractMonths: 18, highlight: true },
+  { slug: "bf-professional", name: "Bf Professional Bot", tier: "Golden", deposit: 9999, monthlyRoi: 5.5, contractMonths: 18 },
+  // 💎 Diamond — 24-month contract
+  { slug: "bf-expert", name: "Bf Expert Bot", tier: "Diamond", deposit: 11111, monthlyRoi: 6, contractMonths: 24 },
+  { slug: "bf-talent", name: "Bf Talent Bot", tier: "Diamond", deposit: 22222, monthlyRoi: 6.5, contractMonths: 24 },
+  { slug: "bf-tycoon", name: "Bf Tycoon Bot", tier: "Diamond", deposit: 33333, monthlyRoi: 7, contractMonths: 24, highlight: true },
+  { slug: "bf-infinity", name: "Bf Infinity Bot", tier: "Diamond", deposit: 55555, monthlyRoi: 8, contractMonths: 24 },
 ];
+
+export const goldenPackages = packages.filter((p) => p.tier === "Golden");
+export const diamondPackages = packages.filter((p) => p.tier === "Diamond");
+
+/** Estimated monthly earnings for a package (deposit × monthly ROI). */
+export function monthlyEarnings(p: BotPackage) {
+  return Math.round((p.deposit * p.monthlyRoi) / 100);
+}
+
+/** Shown with the packages — how capital is returned. */
+export const capitalReturnNote =
+  "Capital is returned in 3 equal parts over the 3 months following your contract term.";
 
 /** The 4-step client journey. */
 export const howItWorks = [
