@@ -9,7 +9,7 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8">
-        <Logo />
+        <Logo priority height={40} />
 
         <nav className="hidden items-center gap-1 md:flex">
           {mainNav.map((item) => (

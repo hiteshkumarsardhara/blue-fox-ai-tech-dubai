@@ -21,12 +21,12 @@
   --muted: #8a96ad;           /* secondary text */
   --muted-2: #5e6c87;         /* faint text */
 
-  /* Brand */
-  --primary: #2f6bff;         /* Blue Fox electric blue */
+  /* Brand — matched to the Blue Fox logo (azure blue + warm orange) */
+  --primary: #1b86e6;         /* Blue Fox azure blue */
   --primary-foreground: #ffffff;
-  --primary-soft: #16264d;    /* tinted background for primary */
-  --accent: #f5b301;          /* gold accent (premium) */
-  --accent-foreground: #0b0f1a;
+  --primary-soft: #0d2742;    /* tinted background for primary */
+  --accent: #f2811e;          /* Blue Fox orange */
+  --accent-foreground: #1a0f03;
 
   /* Status */
   --success: #1fbf75;
@@ -36,7 +36,7 @@
   --danger-soft: #2a1414;
 
   /* Effects */
-  --ring: #2f6bff;
+  --ring: #1b86e6;
   --radius: 0.75rem;
 
   --font-sans: var(--font-geist-sans), system-ui, sans-serif;

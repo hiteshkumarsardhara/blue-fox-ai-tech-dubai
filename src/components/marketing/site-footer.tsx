@@ -10,7 +10,7 @@ export function SiteFooter() {
       <Container className="py-14">
         <div className="grid gap-10 lg:grid-cols-[1.4fr_repeat(4,1fr)]">
           <div className="max-w-xs">
-            <Logo />
+            <Logo height={44} />
             <p className="mt-4 text-sm leading-relaxed text-muted">
               {site.description}
             </p>
