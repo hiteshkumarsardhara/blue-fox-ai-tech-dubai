@@ -18,6 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
 import { CountUp } from "@/components/ui/count-up";
+import { HeroVideo } from "@/components/marketing/hero-video";
 import { RobotCard, VerifiedNote } from "@/components/marketing/robot-card";
 import { robots, howItWorks, site, REGISTRATION_FEE } from "@/lib/site";
 
@@ -25,10 +26,17 @@ export default function HomePage() {
   return (
     <>
       {/* ───────────────────────── Hero ───────────────────────── */}
-      <section className="relative overflow-hidden">
-        <div className="pointer-events-none absolute inset-0 bg-grid opacity-[0.35]" />
-        <div className="pointer-events-none absolute -top-40 left-1/2 h-[480px] w-[820px] -translate-x-1/2 rounded-full bg-primary/20 blur-[140px]" />
-        <Container className="relative py-20 sm:py-28">
+      <section className="relative isolate overflow-hidden">
+        {/* Live forex/trading video background */}
+        <div className="absolute inset-0 -z-10">
+          <HeroVideo className="h-full w-full object-cover" />
+          {/* Readability overlays */}
+          <div className="absolute inset-0 bg-background/65" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/30 to-background" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/70 via-transparent to-background/40" />
+          <div className="pointer-events-none absolute -top-40 left-1/2 h-[480px] w-[820px] -translate-x-1/2 rounded-full bg-primary/15 blur-[140px]" />
+        </div>
+        <Container className="relative py-24 sm:py-32">
           <Reveal className="mx-auto max-w-3xl text-center">
             <Badge tone="primary" className="mx-auto">
               <Sparkles className="h-3.5 w-3.5" /> AI-Powered Forex Robots · Dubai
