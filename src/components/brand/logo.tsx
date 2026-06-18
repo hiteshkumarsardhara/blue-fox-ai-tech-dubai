@@ -28,6 +28,7 @@ export function Logo({
         width={width}
         height={height}
         priority={priority}
+        unoptimized
         className="w-auto"
         style={{ height }}
       />

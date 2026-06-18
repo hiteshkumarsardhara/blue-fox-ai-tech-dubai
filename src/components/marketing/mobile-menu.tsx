@@ -12,7 +12,7 @@ export function MobileMenu() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="md:hidden">
+    <div className="lg:hidden">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -38,18 +38,18 @@ export function MobileMenu() {
             ))}
             <div className="mt-3 grid grid-cols-2 gap-2">
               <Link
-                href="/login"
-                onClick={() => setOpen(false)}
-                className={buttonVariants({ variant: "outline", size: "md" })}
-              >
-                Log in
-              </Link>
-              <Link
                 href="/register"
                 onClick={() => setOpen(false)}
                 className={cn(buttonVariants({ variant: "primary", size: "md" }))}
               >
-                Get started
+                Register
+              </Link>
+              <Link
+                href="/login"
+                onClick={() => setOpen(false)}
+                className={buttonVariants({ variant: "outline", size: "md" })}
+              >
+                Login
               </Link>
             </div>
           </nav>

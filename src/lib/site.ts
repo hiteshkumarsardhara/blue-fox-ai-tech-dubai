@@ -29,11 +29,12 @@ export const CONTRACT_TERMS = [18, 24] as const;
 export type NavItem = { label: string; href: string };
 
 export const mainNav: NavItem[] = [
-  { label: "Robots", href: "/robots" },
-  { label: "How it works", href: "/#how-it-works" },
-  { label: "Results", href: "/results" },
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
+  { label: "Home", href: "/" },
+  { label: "About Us", href: "/about" },
+  { label: "Privacy & Policy", href: "/legal/privacy" },
+  { label: "Terms & Condition", href: "/legal/terms" },
+  { label: "Our Services", href: "/services" },
+  { label: "Contact Us", href: "/contact" },
 ];
 
 export const footerNav: { title: string; links: NavItem[] }[] = [
