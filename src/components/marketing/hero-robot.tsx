@@ -4,9 +4,9 @@ import { motion, useReducedMotion, type Transition } from "framer-motion";
 import { ArrowUpRight, Bot, Coins, TrendingUp } from "lucide-react";
 
 /**
- * Animated "AI trading robot" hero visual.
- * A custom SVG robot floats while live-trading HUD cards orbit around it,
- * each with a distinct motion. Honours prefers-reduced-motion.
+ * Premium "AI trading robot" hero visual — a sleek glossy-black humanoid
+ * with orange energy glow (brand accent), floating among live trading HUD
+ * cards. Honours prefers-reduced-motion.
  */
 export function HeroRobot() {
   const reduce = useReducedMotion();
@@ -16,12 +16,7 @@ export function HeroRobot() {
       ? {}
       : {
           animate: { y: [0, -dist, 0] },
-          transition: {
-            duration: dur,
-            delay,
-            repeat: Infinity,
-            ease: "easeInOut",
-          } as Transition,
+          transition: { duration: dur, delay, repeat: Infinity, ease: "easeInOut" } as Transition,
         };
 
   const spin = (dur: number, dir: 1 | -1 = 1) =>
@@ -33,50 +28,45 @@ export function HeroRobot() {
         };
 
   return (
-    <div className="relative mx-auto aspect-square w-full max-w-[540px]">
-      {/* Ambient glow */}
-      <div className="absolute inset-0 grid place-items-center">
-        <div className="h-[62%] w-[62%] rounded-full bg-primary/25 blur-[90px]" />
-        <div className="absolute h-[40%] w-[40%] rounded-full bg-accent/15 blur-[70px]" />
-      </div>
+    <div className="relative mx-auto aspect-square w-full max-w-[560px]">
+      {/* Ambient orange glow (pulsing) */}
+      <motion.div
+        className="absolute inset-0 grid place-items-center"
+        {...(reduce
+          ? {}
+          : { animate: { opacity: [0.7, 1, 0.7] }, transition: { duration: 4, repeat: Infinity, ease: "easeInOut" } as Transition })}
+      >
+        <div className="h-[60%] w-[60%] rounded-full bg-accent/30 blur-[100px]" />
+        <div className="absolute h-[38%] w-[38%] rounded-full bg-[#ff7a18]/30 blur-[70px]" />
+      </motion.div>
 
       {/* HUD rings */}
-      <motion.div
-        className="absolute inset-[6%] rounded-full border border-dashed border-primary/25"
-        {...spin(46, 1)}
-      />
-      <motion.div
-        className="absolute inset-[17%] rounded-full border border-border-strong/50"
-        {...spin(64, -1)}
-      />
+      <motion.div className="absolute inset-[5%] rounded-full border border-dashed border-accent/25" {...spin(50, 1)} />
+      <motion.div className="absolute inset-[16%] rounded-full border border-border-strong/50" {...spin(70, -1)} />
 
       {/* Robot */}
       <motion.div className="absolute inset-0 grid place-items-center" {...loop(6, 0, 16)}>
-        <RobotSvg className="w-[56%] drop-shadow-[0_24px_48px_rgba(0,0,0,0.55)]" />
+        <RobotSvg className="w-[64%] drop-shadow-[0_30px_60px_rgba(0,0,0,0.6)]" />
       </motion.div>
 
       {/* Floating trading HUD cards — each a different motion */}
       <motion.div className="absolute left-[-2%] top-[12%]" {...loop(4.6, 0.2, 13)}>
         <PriceCard />
       </motion.div>
-
       <motion.div className="absolute right-[-3%] top-[30%]" {...loop(5.6, 0.7, 15)}>
         <ChartCard />
       </motion.div>
-
-      <motion.div className="absolute bottom-[14%] left-[2%]" {...loop(5.1, 1.1, 11)}>
+      <motion.div className="absolute bottom-[14%] left-[1%]" {...loop(5.1, 1.1, 11)}>
         <ReturnBadge />
       </motion.div>
-
-      <motion.div className="absolute bottom-[28%] right-[4%]" {...loop(4.2, 0.4, 10)}>
+      <motion.div className="absolute bottom-[30%] right-[2%]" {...loop(4.2, 0.4, 10)}>
         <CoinChip />
       </motion.div>
 
-      {/* Orbiting node */}
       {!reduce && (
-        <motion.div className="absolute inset-[10%]" {...spin(18, 1)}>
-          <span className="absolute left-1/2 top-0 h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-accent shadow-[0_0_12px] shadow-accent" />
-          <span className="absolute bottom-0 left-1/2 h-2 w-2 -translate-x-1/2 rounded-full bg-primary shadow-[0_0_10px] shadow-primary" />
+        <motion.div className="absolute inset-[9%]" {...spin(20, 1)}>
+          <span className="absolute left-1/2 top-0 h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-accent shadow-[0_0_14px] shadow-accent" />
+          <span className="absolute bottom-0 left-1/2 h-2 w-2 -translate-x-1/2 rounded-full bg-[#ff7a18] shadow-[0_0_12px] shadow-accent" />
         </motion.div>
       )}
     </div>
@@ -87,7 +77,7 @@ export function HeroRobot() {
 
 function PriceCard() {
   return (
-    <div className="flex items-center gap-2.5 rounded-xl border border-border-strong/70 bg-surface/80 px-3 py-2 shadow-xl backdrop-blur">
+    <div className="flex items-center gap-2.5 rounded-xl border border-border-strong/70 bg-surface/85 px-3 py-2 shadow-xl backdrop-blur">
       <div className="grid h-8 w-8 place-items-center rounded-lg bg-accent/15 text-accent">
         <TrendingUp className="h-4 w-4" />
       </div>
@@ -104,7 +94,7 @@ function PriceCard() {
 function ChartCard() {
   const bars = [40, 62, 48, 78, 58, 88, 70, 96];
   return (
-    <div className="rounded-xl border border-border-strong/70 bg-surface/80 p-3 shadow-xl backdrop-blur">
+    <div className="rounded-xl border border-border-strong/70 bg-surface/85 p-3 shadow-xl backdrop-blur">
       <div className="mb-2 flex items-center justify-between gap-6">
         <span className="text-[11px] font-medium text-muted">Live P/L</span>
         <span className="flex items-center gap-0.5 text-[11px] font-semibold text-success">
@@ -126,7 +116,7 @@ function ChartCard() {
 
 function ReturnBadge() {
   return (
-    <div className="flex items-center gap-2.5 rounded-xl border border-success/30 bg-success-soft/80 px-3 py-2 shadow-xl backdrop-blur">
+    <div className="flex items-center gap-2.5 rounded-xl border border-success/30 bg-success-soft/85 px-3 py-2 shadow-xl backdrop-blur">
       <div className="grid h-8 w-8 place-items-center rounded-lg bg-success/20 text-success">
         <Bot className="h-4 w-4" />
       </div>
@@ -140,88 +130,128 @@ function ReturnBadge() {
 
 function CoinChip() {
   return (
-    <div className="flex items-center gap-2 rounded-full border border-border-strong/70 bg-surface/80 px-3 py-1.5 shadow-xl backdrop-blur">
+    <div className="flex items-center gap-2 rounded-full border border-border-strong/70 bg-surface/85 px-3 py-1.5 shadow-xl backdrop-blur">
       <Coins className="h-4 w-4 text-accent" />
       <span className="text-xs font-semibold text-foreground">USDT deposit</span>
     </div>
   );
 }
 
-/* ------------------------------- Robot SVG -------------------------------- */
+/* --------------------------- Premium robot SVG ---------------------------- */
 
 function RobotSvg({ className }: { className?: string }) {
   return (
     <svg
       className={className}
-      viewBox="0 0 220 264"
+      viewBox="0 0 280 340"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
     >
       <defs>
-        <linearGradient id="metal" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#f4f7fc" />
-          <stop offset="0.55" stopColor="#c4cedd" />
-          <stop offset="1" stopColor="#92a0b6" />
+        <linearGradient id="bodyBlack" x1="0.15" y1="0" x2="0.85" y2="1">
+          <stop offset="0" stopColor="#3a3f49" />
+          <stop offset="0.42" stopColor="#15171c" />
+          <stop offset="1" stopColor="#040406" />
         </linearGradient>
-        <linearGradient id="metalDark" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#cfd8e6" />
-          <stop offset="1" stopColor="#7e8ba3" />
+        <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#23262d" />
+          <stop offset="1" stopColor="#0a0b0e" />
         </linearGradient>
-        <radialGradient id="eye" cx="0.5" cy="0.5" r="0.5">
-          <stop offset="0" stopColor="#bfe0ff" />
-          <stop offset="0.5" stopColor="var(--color-primary)" />
-          <stop offset="1" stopColor="#0b3a78" />
+        <radialGradient id="core" cx="0.5" cy="0.45" r="0.55">
+          <stop offset="0" stopColor="#fff4d8" />
+          <stop offset="0.35" stopColor="#ffb347" />
+          <stop offset="0.7" stopColor="#f2811e" />
+          <stop offset="1" stopColor="#7a2e00" stopOpacity="0" />
         </radialGradient>
+        <linearGradient id="visor" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor="#ff7a18" />
+          <stop offset="0.5" stopColor="#ffc24d" />
+          <stop offset="1" stopColor="#ff7a18" />
+        </linearGradient>
+        <filter id="oglow" x="-80%" y="-80%" width="260%" height="260%">
+          <feGaussianBlur stdDeviation="4.5" result="b" />
+          <feMerge>
+            <feMergeNode in="b" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
       </defs>
 
-      {/* Antenna */}
-      <line x1="110" y1="14" x2="110" y2="34" stroke="#9aa6bd" strokeWidth="4" strokeLinecap="round" />
-      <circle cx="110" cy="11" r="6" fill="var(--color-accent)" />
+      {/* ---------- Shoulders / torso ---------- */}
+      {/* Pauldrons */}
+      <path d="M70 250c0-40 26-62 60-62v96c-30 0-60-2-60-34Z" fill="url(#bodyBlack)" stroke="#2a2e36" strokeWidth="1.5" />
+      <path d="M210 250c0-40-26-62-60-62v96c30 0 60-2 60-34Z" fill="url(#bodyBlack)" stroke="#2a2e36" strokeWidth="1.5" />
+      {/* Shoulder joints */}
+      <circle cx="92" cy="214" r="9" fill="url(#panel)" stroke="#3a3f49" />
+      <circle cx="92" cy="214" r="3.5" fill="var(--color-accent)" filter="url(#oglow)" />
+      <circle cx="188" cy="214" r="9" fill="url(#panel)" stroke="#3a3f49" />
+      <circle cx="188" cy="214" r="3.5" fill="var(--color-accent)" filter="url(#oglow)" />
 
-      {/* Ears */}
-      <rect x="40" y="92" width="14" height="40" rx="7" fill="url(#metalDark)" />
-      <rect x="166" y="92" width="14" height="40" rx="7" fill="url(#metalDark)" />
-      <circle cx="47" cy="112" r="3.5" fill="var(--color-primary)" />
-      <circle cx="173" cy="112" r="3.5" fill="var(--color-primary)" />
+      {/* Chest / torso plate */}
+      <path d="M104 198c0-12 18-20 36-20s36 8 36 20l-4 116c0 10-14 16-32 16s-32-6-32-16l-4-116Z" fill="url(#bodyBlack)" stroke="#2a2e36" strokeWidth="1.5" />
+      {/* Chest seams */}
+      <path d="M140 184v140" stroke="#000" strokeOpacity="0.5" strokeWidth="1.5" />
+      <path d="M112 224h56M110 250h60M112 278h56" stroke="#000" strokeOpacity="0.45" strokeWidth="1.5" />
 
-      {/* Head */}
-      <rect x="52" y="34" width="116" height="104" rx="36" fill="url(#metal)" stroke="#e9eef7" strokeWidth="1.5" />
-      {/* sheen */}
-      <ellipse cx="86" cy="60" rx="26" ry="12" fill="#ffffff" opacity="0.35" />
+      {/* Energy lines from core */}
+      <path d="M140 232 L116 214 M140 232 L164 214 M140 250 L118 264 M140 250 L162 264" stroke="var(--color-accent)" strokeWidth="1.5" strokeOpacity="0.7" filter="url(#oglow)" />
+
+      {/* Reactor core */}
+      <circle cx="140" cy="240" r="20" fill="#050507" stroke="#2a2e36" />
+      <circle cx="140" cy="240" r="15" fill="url(#core)" filter="url(#oglow)" />
+      <circle cx="140" cy="240" r="6" fill="#fff4d8" />
+
+      {/* Abdomen glow segments */}
+      <circle cx="140" cy="286" r="3" fill="var(--color-accent)" filter="url(#oglow)" />
+      <circle cx="140" cy="300" r="2.5" fill="#ff7a18" filter="url(#oglow)" />
+
+      {/* Vent slats */}
+      <rect x="118" y="292" width="8" height="20" rx="3" fill="#000" fillOpacity="0.55" />
+      <rect x="154" y="292" width="8" height="20" rx="3" fill="#000" fillOpacity="0.55" />
+
+      {/* ---------- Neck ---------- */}
+      <rect x="126" y="158" width="28" height="30" rx="8" fill="url(#panel)" stroke="#2a2e36" />
+      <path d="M130 166h20M130 174h20" stroke="#000" strokeOpacity="0.4" strokeWidth="1.4" />
+
+      {/* ---------- Head ---------- */}
+      <path
+        d="M140 44c30 0 50 22 52 54 1 20-6 36-18 46-9 7-21 10-34 10s-25-3-34-10c-12-10-19-26-18-46 2-32 22-54 52-54Z"
+        fill="url(#bodyBlack)"
+        stroke="#2a2e36"
+        strokeWidth="1.5"
+      />
+      {/* Rim light */}
+      <path d="M99 86c2-26 18-44 41-46" stroke="#cfd6e2" strokeOpacity="0.5" strokeWidth="2" strokeLinecap="round" />
+      {/* Crown seam */}
+      <path d="M140 44v22M114 60c8-6 18-9 26-9s18 3 26 9" stroke="#000" strokeOpacity="0.45" strokeWidth="1.5" />
 
       {/* Visor */}
-      <rect x="66" y="62" width="88" height="50" rx="25" fill="#0a1120" />
-      <rect x="66" y="62" width="88" height="50" rx="25" fill="none" stroke="var(--color-primary)" strokeOpacity="0.4" strokeWidth="1.5" />
-      {/* Eyes */}
-      <circle cx="92" cy="87" r="10" fill="url(#eye)" />
-      <circle cx="128" cy="87" r="10" fill="url(#eye)" />
-      <circle cx="92" cy="87" r="10" fill="none" stroke="#bfe0ff" strokeOpacity="0.5" />
-      <circle cx="128" cy="87" r="10" fill="none" stroke="#bfe0ff" strokeOpacity="0.5" />
-
-      {/* Neck */}
-      <rect x="96" y="132" width="28" height="18" rx="6" fill="url(#metalDark)" />
-
-      {/* Body */}
-      <rect x="46" y="146" width="128" height="104" rx="32" fill="url(#metal)" stroke="#e9eef7" strokeWidth="1.5" />
-      <ellipse cx="80" cy="168" rx="30" ry="11" fill="#ffffff" opacity="0.3" />
-
-      {/* Chest screen */}
-      <rect x="78" y="168" width="64" height="50" rx="12" fill="#0a1120" />
-      {/* mini chart */}
-      <polyline
-        points="86,206 98,196 108,201 118,186 130,192 138,178"
-        fill="none"
-        stroke="var(--color-primary)"
-        strokeWidth="3"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+      <path
+        d="M104 92c10-9 62-9 72 0 3 6 3 12 0 19-10 9-62 9-72 0-3-7-3-13 0-19Z"
+        fill="url(#visor)"
+        filter="url(#oglow)"
       />
-      <circle cx="138" cy="178" r="3" fill="var(--color-accent)" />
+      <path d="M110 95c10-6 50-6 60 0" stroke="#fff4d8" strokeOpacity="0.8" strokeWidth="2" strokeLinecap="round" />
+      {/* Eyes */}
+      <circle cx="122" cy="102" r="4.5" fill="#fff4d8" />
+      <circle cx="158" cy="102" r="4.5" fill="#fff4d8" />
 
-      {/* Shoulder lights */}
-      <circle cx="60" cy="232" r="4" fill="var(--color-accent)" opacity="0.9" />
-      <circle cx="160" cy="232" r="4" fill="var(--color-primary)" opacity="0.9" />
+      {/* Jaw / chin detail */}
+      <path d="M126 138c8 5 20 5 28 0" stroke="#000" strokeOpacity="0.4" strokeWidth="1.5" strokeLinecap="round" />
+
+      {/* Ear pods */}
+      <path d="M90 96c-6 2-9 10-7 20l10-2-3-18Z" fill="url(#panel)" stroke="#2a2e36" />
+      <path d="M190 96c6 2 9 10 7 20l-10-2 3-18Z" fill="url(#panel)" stroke="#2a2e36" />
+      <circle cx="92" cy="108" r="2.5" fill="var(--color-accent)" filter="url(#oglow)" />
+      <circle cx="188" cy="108" r="2.5" fill="var(--color-accent)" filter="url(#oglow)" />
+
+      {/* Floating energy particles */}
+      {[
+        [96, 180], [184, 176], [120, 320], [160, 318], [104, 240], [176, 244], [132, 196], [148, 196],
+      ].map(([cx, cy], i) => (
+        <circle key={i} cx={cx} cy={cy} r={i % 3 === 0 ? 2 : 1.4} fill="var(--color-accent)" filter="url(#oglow)" />
+      ))}
     </svg>
   );
 }
