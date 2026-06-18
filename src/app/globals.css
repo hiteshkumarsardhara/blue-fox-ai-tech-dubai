@@ -1,26 +1,135 @@
 @import "tailwindcss";
 
+/*
+  Blue Fox Dubai — design tokens
+  ------------------------------------------------------------------
+  All brand colours live here as CSS variables so the real Blue Fox
+  logo palette can be dropped in by editing ONLY the :root block.
+  A dark "fintech / trading" theme is the default.
+*/
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Surfaces */
+  --background: #060912;      /* page background (near-black navy) */
+  --surface: #0c1322;         /* cards / panels */
+  --surface-2: #121b2f;       /* elevated panels, hovers */
+  --border: #1d2840;          /* hairline borders */
+  --border-strong: #2a3a5c;
+
+  /* Text */
+  --foreground: #e8edf7;      /* primary text */
+  --muted: #8a96ad;           /* secondary text */
+  --muted-2: #5e6c87;         /* faint text */
+
+  /* Brand */
+  --primary: #2f6bff;         /* Blue Fox electric blue */
+  --primary-foreground: #ffffff;
+  --primary-soft: #16264d;    /* tinted background for primary */
+  --accent: #f5b301;          /* gold accent (premium) */
+  --accent-foreground: #0b0f1a;
+
+  /* Status */
+  --success: #1fbf75;
+  --success-soft: #0e2a22;
+  --warning: #f59e0b;
+  --danger: #ef4646;
+  --danger-soft: #2a1414;
+
+  /* Effects */
+  --ring: #2f6bff;
+  --radius: 0.75rem;
+
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-muted: var(--muted);
+  --color-muted-2: var(--muted-2);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+
+  --color-ring: var(--ring);
+
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  --radius-lg: var(--radius);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  border-color: var(--color-border);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--primary);
+  color: #fff;
+}
+
+/* Scrollbar (subtle, dark) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 9999px;
+  border: 2px solid var(--background);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #38496e;
+}
+
+/* Reusable surface helper */
+@utility glass {
+  background: color-mix(in oklab, var(--surface) 75%, transparent);
+  backdrop-filter: blur(12px);
+}
+
+/* Decorative gradient text */
+@utility text-gradient {
+  background: linear-gradient(95deg, var(--foreground) 0%, var(--primary) 60%, var(--accent) 120%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Hero grid backdrop */
+@utility bg-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--border) 60%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--border) 60%, transparent) 1px, transparent 1px);
+  background-size: 56px 56px;
 }
