@@ -186,7 +186,7 @@ export default function HomePage() {
                   <p className="text-xs text-muted">18-month contract · capital back in 3 parts</p>
                 </div>
               </div>
-              <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="mt-6 grid gap-6 md:grid-cols-2">
                 {goldenPackages.map((p, i) => (
                   <Reveal key={p.slug} delay={i * 0.06}>
                     <PackageCard pkg={p} />
@@ -208,7 +208,7 @@ export default function HomePage() {
                   <p className="text-xs text-muted">24-month contract · capital back in 3 parts</p>
                 </div>
               </div>
-              <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="mt-6 grid gap-6 md:grid-cols-2">
                 {diamondPackages.map((p, i) => (
                   <Reveal key={p.slug} delay={i * 0.06}>
                     <PackageCard pkg={p} />
