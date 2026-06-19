@@ -1,4 +1,3 @@
-import { RiskBanner } from "@/components/marketing/risk-banner";
 import { SiteHeader } from "@/components/marketing/site-header";
 import { SiteFooter } from "@/components/marketing/site-footer";
 import { TradingViewTicker } from "@/components/marketing/tradingview-ticker";
@@ -13,7 +12,6 @@ export default function MarketingLayout({
     <>
       <SiteHeader />
       <TradingViewTicker />
-      <RiskBanner />
       <main className="flex-1">{children}</main>
       <SiteFooter />
     </>
