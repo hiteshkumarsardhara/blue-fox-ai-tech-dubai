@@ -9,8 +9,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       <div className="pointer-events-none fixed inset-0 -z-10 bg-grid opacity-[0.18]" />
       <div className="pointer-events-none fixed -top-40 left-1/2 -z-10 h-[500px] w-[820px] -translate-x-1/2 rounded-full bg-primary/15 blur-[150px]" />
 
-      <header className="flex items-center justify-between px-5 py-5 sm:px-8">
-        <Logo height={50} />
+      <header className="px-5 py-5 sm:px-8">
         <Link
           href="/"
           className="inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-foreground"
@@ -19,7 +18,10 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         </Link>
       </header>
 
-      <main className="flex flex-1 items-center justify-center px-4 py-8">{children}</main>
+      <main className="flex flex-1 flex-col items-center justify-center px-4 pb-12">
+        <Logo height={78} className="mb-8" />
+        {children}
+      </main>
 
       <footer className="px-5 py-6 text-center text-xs text-muted-2">
         © {new Date().getFullYear()} Blue Fox Dubai ·{" "}
