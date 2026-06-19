@@ -3,6 +3,7 @@ import { LogOut } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
 import { getCurrentUser } from "@/lib/auth";
 import { logoutAction } from "@/app/(auth)/actions";
+import { PortalNav } from "@/components/portal/portal-nav";
 
 /** Auth-guarded shell for the client portal. */
 export default async function PortalLayout({
@@ -33,6 +34,11 @@ export default async function PortalLayout({
           </div>
         </div>
       </header>
+      <div className="border-b border-border bg-surface/30">
+        <div className="mx-auto max-w-6xl px-5 py-2 sm:px-8">
+          <PortalNav />
+        </div>
+      </div>
       <main className="flex-1">{children}</main>
     </div>
   );
