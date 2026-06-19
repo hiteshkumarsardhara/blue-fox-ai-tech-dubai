@@ -16,6 +16,7 @@ import { PasswordInput } from "@/components/ui/password-input";
 import { cn } from "@/lib/utils";
 import { termsOfService } from "@/lib/legal";
 import { REGISTRATION_FEE } from "@/lib/site";
+import { registerAction } from "@/app/(auth)/actions";
 
 const inputClass =
   "w-full rounded-lg border border-border bg-background/60 px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-2 transition-colors focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-ring/30";
@@ -35,6 +36,7 @@ export function RegisterForm() {
   const [error, setError] = useState("");
   const [reachedBottom, setReachedBottom] = useState(false);
   const [accepted, setAccepted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const termsRef = useRef<HTMLDivElement>(null);
 
   const update = (key: keyof typeof form) =>
@@ -70,8 +72,21 @@ export function RegisterForm() {
     }
   }
 
-  function handleComplete() {
-    // NOTE: wire account creation + $20 fee to the backend in the portal phase.
+  async function handleComplete() {
+    setSubmitting(true);
+    setError("");
+    const res = await registerAction({
+      name: form.name,
+      email: form.email,
+      phone: form.phone,
+      country: form.country,
+      password: form.password,
+    });
+    setSubmitting(false);
+    if (!res.ok) {
+      setError(res.error);
+      return;
+    }
     setStep(3);
   }
 
@@ -245,14 +260,26 @@ export function RegisterForm() {
               </span>
             </label>
 
+            {error && (
+              <p className="mt-4 rounded-lg border border-danger/30 bg-danger-soft px-3 py-2 text-sm text-danger">
+                {error}
+              </p>
+            )}
+
             <Button
               type="button"
               size="lg"
               onClick={handleComplete}
-              disabled={!reachedBottom || !accepted}
+              disabled={!reachedBottom || !accepted || submitting}
               className="mt-5 w-full"
             >
-              <Check className="h-4 w-4" /> Accept &amp; complete registration
+              {submitting ? (
+                "Creating your account..."
+              ) : (
+                <>
+                  <Check className="h-4 w-4" /> Accept &amp; complete registration
+                </>
+              )}
             </Button>
           </div>
         )}
@@ -272,10 +299,10 @@ export function RegisterForm() {
             </p>
             <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link
-                href="/login"
+                href="/portal"
                 className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-primary px-5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
               >
-                Continue to login <ArrowRight className="h-4 w-4" />
+                Go to your dashboard <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 href="/"

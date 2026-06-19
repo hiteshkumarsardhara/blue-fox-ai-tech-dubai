@@ -1,0 +1,39 @@
+import { redirect } from "next/navigation";
+import { LogOut } from "lucide-react";
+import { Logo } from "@/components/brand/logo";
+import { getCurrentUser } from "@/lib/auth";
+import { logoutAction } from "@/app/(auth)/actions";
+
+/** Auth-guarded shell for the client portal. */
+export default async function PortalLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const user = await getCurrentUser();
+  if (!user) redirect("/login");
+
+  return (
+    <div className="flex min-h-screen flex-col">
+      <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-md">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8">
+          <Logo height={40} />
+          <div className="flex items-center gap-3">
+            <span className="hidden text-sm text-muted sm:block">
+              Hi, <span className="font-medium text-foreground">{user.name.split(" ")[0]}</span>
+            </span>
+            <form action={logoutAction}>
+              <button
+                type="submit"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-border-strong px-3 py-1.5 text-sm font-medium text-muted transition-colors hover:text-foreground"
+              >
+                <LogOut className="h-4 w-4" /> Logout
+              </button>
+            </form>
+          </div>
+        </div>
+      </header>
+      <main className="flex-1">{children}</main>
+    </div>
+  );
+}

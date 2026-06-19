@@ -14,3 +14,13 @@ export function formatUSD(amount: number) {
     maximumFractionDigits: 0,
   }).format(amount);
 }
+
+/** Format integer cents as a USD string with 2 decimals. */
+export function formatCents(cents: number) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(cents / 100);
+}

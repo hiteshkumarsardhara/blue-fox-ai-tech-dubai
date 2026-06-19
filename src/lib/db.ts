@@ -1,14 +1,19 @@
+import path from "node:path";
 import { PrismaClient } from "@/generated/prisma/client";
 import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 
 /**
- * Prisma 7 client with the SQLite driver adapter.
- * Reused across HMR in dev via a global singleton.
- * Production: swap the adapter (and datasource provider) for PostgreSQL.
+ * Prisma 7 client with the SQLite driver adapter (dev).
+ * The sqlite file is resolved to an ABSOLUTE path so it opens regardless of the
+ * process working directory. Production: switch the datasource provider +
+ * adapter to MySQL/PostgreSQL.
  */
-const adapter = new PrismaBetterSqlite3({
-  url: process.env.DATABASE_URL ?? "file:./dev.db",
-});
+const rawUrl = process.env.DATABASE_URL ?? "file:./dev.db";
+const url = rawUrl.startsWith("file:")
+  ? "file:" + path.resolve(process.cwd(), rawUrl.slice("file:".length))
+  : rawUrl;
+
+const adapter = new PrismaBetterSqlite3({ url });
 
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 

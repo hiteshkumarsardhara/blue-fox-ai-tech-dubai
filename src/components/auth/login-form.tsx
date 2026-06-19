@@ -2,21 +2,32 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Info, LogIn } from "lucide-react";
+import { ArrowRight, LogIn } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { PasswordInput } from "@/components/ui/password-input";
+import { loginAction } from "@/app/(auth)/actions";
 
 const inputClass =
   "w-full rounded-lg border border-border bg-background/60 px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-2 transition-colors focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-ring/30";
 
 export function LoginForm() {
+  const router = useRouter();
   const [form, setForm] = useState({ email: "", password: "" });
-  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    // NOTE: connect to the auth backend in the portal phase.
-    setSubmitted(true);
+    setLoading(true);
+    setError("");
+    const res = await loginAction({ email: form.email, password: form.password });
+    if (!res.ok) {
+      setError(res.error);
+      setLoading(false);
+      return;
+    }
+    router.push("/portal");
   }
 
   return (
@@ -62,18 +73,20 @@ export function LoginForm() {
             Remember me
           </label>
 
-          {submitted && (
-            <div className="flex items-start gap-2.5 rounded-lg border border-primary/30 bg-primary-soft/40 px-3 py-2.5 text-sm text-muted">
-              <Info className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-              <span>
-                The client portal is launching soon. Your login will be activated
-                once it goes live — thanks for your patience!
-              </span>
-            </div>
+          {error && (
+            <p className="rounded-lg border border-danger/30 bg-danger-soft px-3 py-2.5 text-sm text-danger">
+              {error}
+            </p>
           )}
 
-          <Button type="submit" size="lg" className="w-full">
-            <LogIn className="h-4 w-4" /> Log in
+          <Button type="submit" size="lg" disabled={loading} className="w-full">
+            {loading ? (
+              "Logging in..."
+            ) : (
+              <>
+                <LogIn className="h-4 w-4" /> Log in
+              </>
+            )}
           </Button>
         </form>
 
