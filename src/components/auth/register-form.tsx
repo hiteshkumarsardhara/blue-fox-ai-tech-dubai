@@ -12,6 +12,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { PasswordInput } from "@/components/ui/password-input";
 import { cn } from "@/lib/utils";
 import { termsOfService } from "@/lib/legal";
 import { REGISTRATION_FEE } from "@/lib/site";
@@ -104,10 +105,10 @@ export function RegisterForm() {
                 <input required type="text" placeholder="United Arab Emirates" value={form.country} onChange={update("country")} className={inputClass} />
               </Field>
               <Field label="Password" required>
-                <input required type="password" placeholder="Min. 6 characters" value={form.password} onChange={update("password")} className={inputClass} />
+                <PasswordInput required placeholder="Min. 6 characters" value={form.password} onChange={update("password")} />
               </Field>
               <Field label="Confirm password" required>
-                <input required type="password" placeholder="Re-enter password" value={form.confirm} onChange={update("confirm")} className={inputClass} />
+                <PasswordInput required placeholder="Re-enter password" value={form.confirm} onChange={update("confirm")} />
               </Field>
             </div>
 
