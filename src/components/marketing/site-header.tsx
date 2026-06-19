@@ -8,8 +8,8 @@ import { mainNav } from "@/lib/site";
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/85 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5 sm:px-8">
-        <Logo priority height={40} />
+      <div className="mx-auto flex h-[72px] max-w-6xl items-center justify-between gap-4 px-5 sm:px-8">
+        <Logo priority height={52} />
 
         <nav className="hidden items-center xl:flex">
           {mainNav.map((item) => (

@@ -10,7 +10,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       <div className="pointer-events-none fixed -top-40 left-1/2 -z-10 h-[500px] w-[820px] -translate-x-1/2 rounded-full bg-primary/15 blur-[150px]" />
 
       <header className="flex items-center justify-between px-5 py-5 sm:px-8">
-        <Logo height={36} />
+        <Logo height={50} />
         <Link
           href="/"
           className="inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-foreground"
