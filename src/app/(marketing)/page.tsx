@@ -23,6 +23,7 @@ import { Reveal } from "@/components/ui/reveal";
 import { CountUp } from "@/components/ui/count-up";
 import { HeroVideo } from "@/components/marketing/hero-video";
 import { HeroRobot } from "@/components/marketing/hero-robot";
+import { RobotShowcase } from "@/components/marketing/robot-showcase";
 import { PackageCard } from "@/components/marketing/package-card";
 import {
   packages,
@@ -258,6 +259,9 @@ export default function HomePage() {
           </div>
         </Container>
       </section>
+
+      {/* ──────────── Robots in action (image showcase) ──────────── */}
+      <RobotShowcase />
 
       {/* ────────────────────────── Why us ───────────────────────────── */}
       <section className="py-20 sm:py-24">

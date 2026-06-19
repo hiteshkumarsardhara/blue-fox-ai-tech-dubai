@@ -43,3 +43,7 @@ next-env.d.ts
 # python (skill scripts)
 __pycache__/
 *.pyc
+
+# large source images at repo root (optimized copies live in public/)
+/*.jpg
+/*.jpeg
