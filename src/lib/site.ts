@@ -33,7 +33,7 @@ export const mainNav: NavItem[] = [
   { label: "About Us", href: "/about" },
   { label: "Privacy & Policy", href: "/legal/privacy" },
   { label: "Terms & Condition", href: "/legal/terms" },
-  { label: "Our Services", href: "/#packages" },
+  { label: "Our Services", href: "/services" },
   { label: "Contact Us", href: "/contact" },
 ];
 
@@ -41,10 +41,10 @@ export const footerNav: { title: string; links: NavItem[] }[] = [
   {
     title: "Platform",
     links: [
+      { label: "Our Services", href: "/services" },
       { label: "Packages", href: "/#packages" },
       { label: "How it works", href: "/#how-it-works" },
       { label: "Live Results", href: "/results" },
-      { label: "Referral Program", href: "/referrals" },
     ],
   },
   {
@@ -60,9 +60,9 @@ export const footerNav: { title: string; links: NavItem[] }[] = [
     title: "Company",
     links: [
       { label: "About Us", href: "/about" },
-      { label: "Contact", href: "/contact" },
-      { label: "FAQ", href: "/faq" },
-      { label: "Support", href: "/support" },
+      { label: "Our Mission", href: "/mission" },
+      { label: "Our Vision", href: "/vision" },
+      { label: "Contact Us", href: "/contact" },
     ],
   },
   {
