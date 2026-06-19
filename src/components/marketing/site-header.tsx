@@ -11,19 +11,19 @@ export function SiteHeader() {
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5 sm:px-8">
         <Logo priority height={40} />
 
-        <nav className="hidden items-center lg:flex">
+        <nav className="hidden items-center xl:flex">
           {mainNav.map((item) => (
             <Link
               key={item.label}
               href={item.href}
-              className="rounded-lg px-2.5 py-2 text-sm font-medium text-muted transition-colors hover:text-foreground"
+              className="rounded-lg px-2 py-2 text-[13px] font-medium text-muted transition-colors hover:text-foreground"
             >
               {item.label}
             </Link>
           ))}
         </nav>
 
-        <div className="hidden items-center gap-2 lg:flex">
+        <div className="hidden items-center gap-2 xl:flex">
           <Link href="/register" className={buttonVariants({ variant: "primary", size: "sm" })}>
             Register
           </Link>
