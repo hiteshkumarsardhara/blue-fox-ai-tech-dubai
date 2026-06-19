@@ -47,3 +47,11 @@ __pycache__/
 # large source images at repo root (optimized copies live in public/)
 /*.jpg
 /*.jpeg
+
+/src/generated/prisma
+
+# prisma sqlite db (dev)
+/dev.db
+/dev.db-journal
+prisma/*.db
+prisma/*.db-journal

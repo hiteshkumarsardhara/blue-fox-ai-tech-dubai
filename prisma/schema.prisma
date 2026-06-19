@@ -1,0 +1,175 @@
+// Blue Fox Dubai — data model
+// Dev: SQLite. Production: switch datasource provider to "postgresql".
+// Money is stored as integer cents to avoid float errors.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id              String    @id @default(cuid())
+  email           String    @unique
+  passwordHash    String
+  name            String
+  phone           String?
+  country         String?
+  role            String    @default("client") // client | admin | finance | support
+  status          String    @default("active") // active | suspended
+  kycStatus       String    @default("none")   // none | pending | approved | rejected
+  referralCode    String    @unique @default(cuid())
+  referredById    String?
+  referredBy      User?     @relation("Referrals", fields: [referredById], references: [id])
+  referrals       User[]    @relation("Referrals")
+  termsAcceptedAt DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  wallet        Wallet?
+  contracts     Contract[]
+  deposits      Deposit[]
+  withdrawals   Withdrawal[]
+  ledgerEntries LedgerEntry[]
+  earnings      Earning[]
+  kycRecords    KycRecord[]
+}
+
+model Wallet {
+  id                  String   @id @default(cuid())
+  userId              String   @unique
+  user                User     @relation(fields: [userId], references: [id])
+  availableCents      Int      @default(0)
+  investedCents       Int      @default(0)
+  totalEarningsCents  Int      @default(0)
+  totalDepositedCents Int      @default(0)
+  totalWithdrawnCents Int      @default(0)
+  currency            String   @default("USD")
+  updatedAt           DateTime @updatedAt
+}
+
+/// A bot package (e.g. Bf Beginner Bot). Fixed deposit + fixed monthly ROI.
+model Robot {
+  id             String     @id @default(cuid())
+  slug           String     @unique
+  name           String
+  tier           String // Golden | Diamond
+  depositCents   Int
+  monthlyRoi     Float
+  contractMonths Int
+  highlight      Boolean    @default(false)
+  status         String     @default("active") // active | retired
+  sortOrder      Int        @default(0)
+  createdAt      DateTime   @default(now())
+  contracts      Contract[]
+}
+
+/// A client's investment in a robot for a fixed term.
+model Contract {
+  id                String    @id @default(cuid())
+  userId            String
+  user              User      @relation(fields: [userId], references: [id])
+  robotId           String
+  robot             Robot     @relation(fields: [robotId], references: [id])
+  principalCents    Int
+  termMonths        Int
+  monthlyRoi        Float
+  status            String    @default("active") // active | completed | cancelled
+  startDate         DateTime  @default(now())
+  endDate           DateTime
+  nextPayoutAt      DateTime?
+  totalPaidOutCents Int       @default(0)
+  createdAt         DateTime  @default(now())
+  earnings          Earning[]
+}
+
+/// A monthly return credited to a client for a contract.
+model Earning {
+  id          String   @id @default(cuid())
+  contractId  String
+  contract    Contract @relation(fields: [contractId], references: [id])
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  periodIndex Int // 1..termMonths
+  pct         Float
+  amountCents Int
+  status      String   @default("credited") // scheduled | credited
+  creditedAt  DateTime @default(now())
+}
+
+model Deposit {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id])
+  amountCents   Int
+  currency      String    @default("USD")
+  method        String // usdt | usdc | bank | manual
+  status        String    @default("pending") // pending | confirmed | rejected
+  reference     String?
+  proofUrl      String?
+  network       String?
+  walletAddress String?
+  note          String?
+  confirmedById String?
+  createdAt     DateTime  @default(now())
+  confirmedAt   DateTime?
+}
+
+model Withdrawal {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id])
+  amountCents   Int
+  feeCents      Int       @default(0)
+  method        String // crypto | bank | cash
+  destination   String // crypto address / bank details / cash area + contact
+  status        String    @default("pending") // pending | approved | processing | paid | rejected
+  note          String?
+  processedById String?
+  requestedAt   DateTime  @default(now())
+  processedAt   DateTime?
+}
+
+/// Immutable money ledger. Wallet balances are derived from these.
+model LedgerEntry {
+  id                String   @id @default(cuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id])
+  type              String // registration_fee | deposit | investment_hold | investment_release | earning | withdrawal | fee | bonus | referral_commission | adjustment
+  amountCents       Int // signed: + credit, - debit (to available balance)
+  balanceAfterCents Int
+  refType           String?
+  refId             String?
+  note              String?
+  createdAt         DateTime @default(now())
+}
+
+model KycRecord {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  docType      String
+  docNumber    String?
+  fileUrls     String? // comma-separated URLs
+  status       String   @default("pending") // pending | approved | rejected
+  reviewedById String?
+  createdAt    DateTime @default(now())
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?
+  action     String
+  entityType String?
+  entityId   String?
+  meta       String? // JSON string
+  createdAt  DateTime @default(now())
+}
+
+model Setting {
+  key   String @id
+  value String
+}
