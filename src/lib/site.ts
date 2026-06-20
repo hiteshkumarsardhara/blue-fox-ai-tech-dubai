@@ -26,17 +26,17 @@ export const REGISTRATION_FEE = 20;
 /** Available contract terms in months. */
 export const CONTRACT_TERMS = [18, 24] as const;
 
-export type NavItem = { label: string; href: string };
+export type NavItem = { label: string; href: string; tKey?: string };
 
 export const mainNav: NavItem[] = [
-  { label: "Home", href: "/" },
-  { label: "About Us", href: "/about" },
-  { label: "Mission", href: "/mission" },
-  { label: "Vision", href: "/vision" },
-  { label: "Privacy & Policy", href: "/legal/privacy" },
-  { label: "Terms & Condition", href: "/legal/terms" },
-  { label: "Our Services", href: "/services" },
-  { label: "Contact Us", href: "/contact" },
+  { label: "Home", href: "/", tKey: "nav.home" },
+  { label: "About Us", href: "/about", tKey: "nav.about" },
+  { label: "Mission", href: "/mission", tKey: "nav.mission" },
+  { label: "Vision", href: "/vision", tKey: "nav.vision" },
+  { label: "Privacy & Policy", href: "/legal/privacy", tKey: "nav.privacy" },
+  { label: "Terms & Condition", href: "/legal/terms", tKey: "nav.terms" },
+  { label: "Our Services", href: "/services", tKey: "nav.services" },
+  { label: "Contact Us", href: "/contact", tKey: "nav.contact" },
 ];
 
 export const footerNav: { title: string; links: NavItem[] }[] = [

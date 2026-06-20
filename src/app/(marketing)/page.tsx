@@ -35,8 +35,10 @@ import {
   capitalReturnNote,
 } from "@/lib/site";
 import { formatUSD } from "@/lib/utils";
+import { getTranslations } from "@/lib/i18n";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const { t } = await getTranslations();
   return (
     <>
       {/* ───────────────────────── Hero ───────────────────────── */}
@@ -55,16 +57,14 @@ export default function HomePage() {
             {/* Left: copy + CTA + reviews + plans */}
             <Reveal>
               <Badge tone="primary">
-                <Sparkles className="h-3.5 w-3.5" /> AI-Powered Forex Robots · Worldwide
+                <Sparkles className="h-3.5 w-3.5" /> {t("hero.eyebrow")}
               </Badge>
               <h1 className="mt-5 text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
-                Don&apos;t Delay,{" "}
-                <span className="text-gradient">Invest Today.</span>
+                {t("hero.title1")}{" "}
+                <span className="text-gradient">{t("hero.title2")}</span>
               </h1>
               <p className="mt-5 max-w-xl text-pretty text-base leading-relaxed text-muted sm:text-lg">
-                Let Blue Fox AI trading robots grow your capital. Deposit, rent a
-                robot, and earn a monthly return paid to your wallet — withdraw
-                anytime in crypto, bank transfer or cash.
+                {t("hero.subtitle")}
               </p>
 
               <div className="mt-7 flex flex-wrap items-center gap-3">
@@ -72,10 +72,10 @@ export default function HomePage() {
                   href="/register"
                   className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-primary via-[#3f7fe0] to-accent px-7 text-sm font-semibold text-white shadow-[0_12px_34px_-8px] shadow-primary/60 transition-transform hover:scale-[1.02]"
                 >
-                  Start Investing Now <ArrowRight className="h-4 w-4" />
+                  {t("hero.ctaPrimary")} <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link href="/#packages" className={buttonVariants({ variant: "outline", size: "lg" })}>
-                  View Packages
+                  {t("hero.ctaSecondary")}
                 </Link>
               </div>
 

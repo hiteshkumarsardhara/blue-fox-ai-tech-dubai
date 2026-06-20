@@ -1,0 +1,24 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About Us",
+    "mission": "Mission",
+    "vision": "Vision",
+    "privacy": "Privacy & Policy",
+    "terms": "Terms & Condition",
+    "services": "Our Services",
+    "contact": "Contact Us"
+  },
+  "common": {
+    "register": "Register",
+    "login": "Login"
+  },
+  "hero": {
+    "eyebrow": "AI-Powered Forex Robots · Worldwide",
+    "title1": "Don't Delay,",
+    "title2": "Invest Today.",
+    "subtitle": "Let Blue Fox AI trading robots grow your capital. Deposit, rent a robot, and earn a monthly return paid to your wallet — withdraw anytime in crypto, bank transfer or cash.",
+    "ctaPrimary": "Start Investing Now",
+    "ctaSecondary": "View Packages"
+  }
+}
