@@ -20,7 +20,7 @@ export default async function PortalLayout({
   return (
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-md">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8">
+        <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-5 sm:px-8">
           <Logo height={40} />
           <div className="flex items-center gap-3">
             <Link
@@ -41,7 +41,7 @@ export default async function PortalLayout({
         </div>
       </header>
       <div className="border-b border-border bg-surface/30">
-        <div className="mx-auto max-w-6xl px-5 py-2 sm:px-8">
+        <div className="mx-auto max-w-[1400px] px-5 py-2 sm:px-8">
           <PortalNav />
         </div>
       </div>

@@ -27,7 +27,7 @@ export function MobileMenu() {
 
       {open && (
         <div className="absolute inset-x-0 top-full border-b border-border bg-surface/95 backdrop-blur">
-          <nav className="mx-auto flex max-w-6xl flex-col gap-1 px-5 py-4 sm:px-8">
+          <nav className="mx-auto flex max-w-[1400px] flex-col gap-1 px-5 py-4 sm:px-8">
             {mainNav.map((item) => (
               <Link
                 key={item.href}

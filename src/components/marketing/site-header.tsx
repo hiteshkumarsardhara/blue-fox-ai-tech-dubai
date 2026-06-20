@@ -11,7 +11,7 @@ export async function SiteHeader() {
   const { t, locale } = await getTranslations();
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/85 backdrop-blur-md">
-      <div className="mx-auto flex h-20 max-w-6xl items-center justify-between gap-4 px-5 sm:px-8">
+      <div className="mx-auto flex h-20 max-w-[1400px] items-center justify-between gap-4 px-5 sm:px-8">
         <Logo priority height={60} />
 
         <nav className="hidden items-center xl:flex">
