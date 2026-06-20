@@ -41,9 +41,11 @@ async function main() {
     // slug, label, expectOk
     ["bf-ex-trader", "rent $7,777 (first robot)", true],
     ["bf-beginner", "rent $3,333 (cheaper → downgrade)", false],
-    ["bf-ex-trader", "rent $7,777 (equal)", true],
-    ["bf-professional", "rent $9,999 (upgrade)", true],
-    ["bf-trader", "rent $5,555 (cheaper than $9,999 → downgrade)", false],
+    ["bf-ex-trader", "rent $7,777 (same robot again)", false],
+    ["bf-professional", "rent $9,999 (strict upgrade)", true],
+    ["bf-professional", "rent $9,999 (same as new highest)", false],
+    ["bf-trader", "rent $5,555 (lower than highest)", false],
+    ["bf-expert", "rent $11,111 (strict upgrade)", true],
   ];
 
   let allPass = true;

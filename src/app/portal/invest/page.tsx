@@ -12,20 +12,21 @@ export const metadata: Metadata = { title: "Invest" };
 
 export default async function InvestPage() {
   const user = await getCurrentUser();
-  const [robots, wallet, activeContracts] = await Promise.all([
+  const [robots, wallet, allContracts] = await Promise.all([
     db.robot.findMany({
       where: { status: "active" },
       orderBy: [{ sortOrder: "asc" }, { depositCents: "asc" }],
     }),
     db.wallet.findUnique({ where: { userId: user!.id } }),
     db.contract.findMany({
-      where: { userId: user!.id, status: "active" },
+      where: { userId: user!.id },
       select: { principalCents: true },
     }),
   ]);
   const available = wallet?.availableCents ?? 0;
-  // Highest active package — new rentals must be equal or higher (no downgrade).
-  const currentMax = activeContracts.reduce((m, c) => Math.max(m, c.principalCents), 0);
+  // Highest package ever rented — new rentals must be strictly higher (no
+  // downgrade, no same amount, no re-renting the same robot).
+  const highestEver = allContracts.reduce((m, c) => Math.max(m, c.principalCents), 0);
 
   return (
     <Container className="py-8">
@@ -55,13 +56,13 @@ export default async function InvestPage() {
         </div>
       )}
 
-      {currentMax > 0 && (
+      {highestEver > 0 && (
         <div className="mt-6 flex items-start gap-2 rounded-xl border border-border bg-surface px-4 py-3 text-sm text-muted">
           <TrendingUp className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
           <span>
-            Your highest active package is{" "}
-            <span className="font-semibold text-foreground">{formatCents(currentMax)}</span>. You can
-            add an equal or higher package — downgrades aren&apos;t allowed.
+            Your highest package so far is{" "}
+            <span className="font-semibold text-foreground">{formatCents(highestEver)}</span>. You can
+            only rent a higher package — the same or lower ones aren&apos;t available.
           </span>
         </div>
       )}
@@ -71,7 +72,7 @@ export default async function InvestPage() {
           const monthly = Math.round((r.depositCents * r.monthlyRoi) / 100);
           const totalReturn = monthly * r.contractMonths;
           const affordable = available >= r.depositCents;
-          const allowed = r.depositCents >= currentMax;
+          const allowed = r.depositCents > highestEver;
           const isDiamond = r.tier.toLowerCase() === "diamond";
           return (
             <div

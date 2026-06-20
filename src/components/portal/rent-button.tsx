@@ -35,7 +35,7 @@ export function RentButton({
   const label = loading
     ? "Processing..."
     : !allowed
-      ? "Downgrade not allowed"
+      ? "Upgrade only"
       : !affordable
         ? "Insufficient balance"
         : "Rent this robot";

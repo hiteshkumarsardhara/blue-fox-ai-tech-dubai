@@ -155,16 +155,16 @@ export async function rentRobot(userId: string, robotId: string) {
     if (wallet.availableCents < robot.depositCents)
       throw new Error("Insufficient balance — please deposit first.");
 
-    // Upgrade-only: a new robot can't cost less than the client's highest
-    // currently-active robot. Equal or higher packages are allowed; downgrades
-    // are not.
-    const activeContracts = await tx.contract.findMany({
-      where: { userId, status: "active" },
+    // Strict upgrade only: a new robot must cost MORE than every package the
+    // client has ever rented. This blocks downgrades, same-amount packages, and
+    // re-renting the same robot.
+    const contracts = await tx.contract.findMany({
+      where: { userId },
       select: { principalCents: true },
     });
-    const currentMax = activeContracts.reduce((m, c) => Math.max(m, c.principalCents), 0);
-    if (robot.depositCents < currentMax)
-      throw new Error("You can only rent an equal or higher package — downgrades aren't allowed.");
+    const highestEver = contracts.reduce((m, c) => Math.max(m, c.principalCents), 0);
+    if (robot.depositCents <= highestEver)
+      throw new Error("You can only rent a higher package than any you've already rented.");
 
     const start = new Date();
     const contract = await tx.contract.create({
