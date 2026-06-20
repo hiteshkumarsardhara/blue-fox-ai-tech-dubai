@@ -23,7 +23,7 @@ const inputClass =
 
 type Step = 1 | 2 | 3;
 
-export function RegisterForm() {
+export function RegisterForm({ initialRef = "" }: { initialRef?: string }) {
   const [step, setStep] = useState<Step>(1);
   const [form, setForm] = useState({
     name: "",
@@ -32,6 +32,7 @@ export function RegisterForm() {
     country: "",
     password: "",
     confirm: "",
+    referralCode: initialRef,
   });
   const [error, setError] = useState("");
   const [reachedBottom, setReachedBottom] = useState(false);
@@ -81,6 +82,7 @@ export function RegisterForm() {
       phone: form.phone,
       country: form.country,
       password: form.password,
+      referralCode: form.referralCode,
     });
     setSubmitting(false);
     if (!res.ok) {
@@ -125,6 +127,23 @@ export function RegisterForm() {
               <Field label="Confirm password" required>
                 <PasswordInput required placeholder="Re-enter password" value={form.confirm} onChange={update("confirm")} />
               </Field>
+            </div>
+
+            <div className="mt-4">
+              <Field label="Referral code (optional)">
+                <input
+                  type="text"
+                  placeholder="Enter a code if you were referred"
+                  value={form.referralCode}
+                  onChange={update("referralCode")}
+                  className={inputClass}
+                />
+              </Field>
+              {initialRef && (
+                <p className="mt-1.5 flex items-center gap-1.5 text-xs text-success">
+                  <CheckCircle2 className="h-3.5 w-3.5" /> Referral applied
+                </p>
+              )}
             </div>
 
             {error && (

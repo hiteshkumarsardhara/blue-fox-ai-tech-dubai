@@ -25,6 +25,7 @@ const SETTINGS = [
   { key: "deposit_usdt_trc20", value: "" },
   { key: "deposit_usdt_erc20", value: "" },
   { key: "deposit_bank_details", value: "" },
+  { key: "referral_commission_pct", value: "5" },
 ];
 
 async function main() {

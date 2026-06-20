@@ -9,6 +9,7 @@ import {
   LayoutDashboard,
   Receipt,
   ShieldCheck,
+  Gift,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -18,6 +19,7 @@ const LINKS = [
   { href: "/portal/invest", label: "Invest", icon: Bot },
   { href: "/portal/withdraw", label: "Withdraw", icon: ArrowUpFromLine },
   { href: "/portal/kyc", label: "Verify", icon: ShieldCheck },
+  { href: "/portal/referrals", label: "Referrals", icon: Gift },
   { href: "/portal/transactions", label: "Transactions", icon: Receipt },
 ];
 

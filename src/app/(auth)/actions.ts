@@ -17,6 +17,7 @@ export async function registerAction(input: {
   phone?: string;
   country?: string;
   password: string;
+  referralCode?: string;
 }): Promise<ActionResult> {
   const name = input.name?.trim();
   const email = input.email?.trim().toLowerCase();
@@ -31,6 +32,17 @@ export async function registerAction(input: {
   if (existing)
     return { ok: false, error: "An account with this email already exists." };
 
+  // Resolve an optional referrer; silently ignore an unknown code.
+  let referredById: string | null = null;
+  const code = input.referralCode?.trim();
+  if (code) {
+    const referrer = await db.user.findUnique({
+      where: { referralCode: code },
+      select: { id: true },
+    });
+    if (referrer) referredById = referrer.id;
+  }
+
   const passwordHash = await bcrypt.hash(input.password, 10);
 
   const user = await db.user.create({
@@ -41,6 +53,7 @@ export async function registerAction(input: {
       phone: input.phone?.trim() || null,
       country: input.country?.trim() || null,
       termsAcceptedAt: new Date(),
+      referredById,
       wallet: { create: {} },
     },
   });

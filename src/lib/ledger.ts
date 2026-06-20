@@ -53,6 +53,41 @@ async function audit(tx: Tx, actorId: string | null, action: string, entityType:
   await tx.auditLog.create({ data: { actorId, action, entityType, entityId } });
 }
 
+/**
+ * Credit the renter's referrer a configurable % of the rental principal.
+ * Best-effort: any missing referrer/wallet/setting is skipped so it can never
+ * fail the rental transaction it runs inside.
+ */
+async function payReferralCommission(
+  tx: Tx,
+  renterId: string,
+  principalCents: number,
+  contractId: string,
+) {
+  const renter = await tx.user.findUnique({
+    where: { id: renterId },
+    select: { referredById: true },
+  });
+  if (!renter?.referredById) return;
+
+  const refWallet = await tx.wallet.findUnique({ where: { userId: renter.referredById } });
+  if (!refWallet) return;
+
+  const setting = await tx.setting.findUnique({ where: { key: "referral_commission_pct" } });
+  const pct = setting ? parseFloat(setting.value) : 0;
+  if (!pct || pct <= 0) return;
+
+  const commission = Math.round((principalCents * pct) / 100);
+  if (commission <= 0) return;
+
+  await moveAvailable(tx, renter.referredById, "referral_commission", commission, {
+    refType: "Contract",
+    refId: contractId,
+    note: `Referral commission (${pct}%)`,
+  });
+  await audit(tx, renter.referredById, "referral_commission", "Contract", contractId);
+}
+
 /* ───────────────────────────── Deposits ───────────────────────────── */
 
 export async function requestDeposit(
@@ -145,6 +180,10 @@ export async function rentRobot(userId: string, robotId: string) {
       note: `Rented ${robot.name}`,
     });
     await audit(tx, userId, "robot_rented", "Contract", contract.id);
+
+    // Reward the referrer (if any) — never blocks the rental.
+    await payReferralCommission(tx, userId, robot.depositCents, contract.id);
+
     return contract;
   });
 }
