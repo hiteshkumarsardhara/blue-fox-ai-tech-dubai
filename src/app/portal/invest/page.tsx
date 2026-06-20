@@ -12,14 +12,20 @@ export const metadata: Metadata = { title: "Invest" };
 
 export default async function InvestPage() {
   const user = await getCurrentUser();
-  const [robots, wallet] = await Promise.all([
+  const [robots, wallet, activeContracts] = await Promise.all([
     db.robot.findMany({
       where: { status: "active" },
       orderBy: [{ sortOrder: "asc" }, { depositCents: "asc" }],
     }),
     db.wallet.findUnique({ where: { userId: user!.id } }),
+    db.contract.findMany({
+      where: { userId: user!.id, status: "active" },
+      select: { principalCents: true },
+    }),
   ]);
   const available = wallet?.availableCents ?? 0;
+  // Highest active package — new rentals must be equal or higher (no downgrade).
+  const currentMax = activeContracts.reduce((m, c) => Math.max(m, c.principalCents), 0);
 
   return (
     <Container className="py-8">
@@ -49,11 +55,23 @@ export default async function InvestPage() {
         </div>
       )}
 
+      {currentMax > 0 && (
+        <div className="mt-6 flex items-start gap-2 rounded-xl border border-border bg-surface px-4 py-3 text-sm text-muted">
+          <TrendingUp className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+          <span>
+            Your highest active package is{" "}
+            <span className="font-semibold text-foreground">{formatCents(currentMax)}</span>. You can
+            add an equal or higher package — downgrades aren&apos;t allowed.
+          </span>
+        </div>
+      )}
+
       <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {robots.map((r) => {
           const monthly = Math.round((r.depositCents * r.monthlyRoi) / 100);
           const totalReturn = monthly * r.contractMonths;
           const affordable = available >= r.depositCents;
+          const allowed = r.depositCents >= currentMax;
           const isDiamond = r.tier.toLowerCase() === "diamond";
           return (
             <div
@@ -101,7 +119,7 @@ export default async function InvestPage() {
               </dl>
 
               <div className="mt-5 flex-1" />
-              <RentButton robotId={r.id} affordable={affordable} />
+              <RentButton robotId={r.id} affordable={affordable} allowed={allowed} />
             </div>
           );
         })}

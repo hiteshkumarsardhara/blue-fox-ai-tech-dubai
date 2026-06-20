@@ -8,13 +8,17 @@ import { Button } from "@/components/ui/button";
 export function RentButton({
   robotId,
   affordable,
+  allowed = true,
 }: {
   robotId: string;
   affordable: boolean;
+  allowed?: boolean;
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const blocked = !allowed || !affordable;
 
   async function onClick() {
     setLoading(true);
@@ -28,16 +32,24 @@ export function RentButton({
     router.refresh();
   }
 
+  const label = loading
+    ? "Processing..."
+    : !allowed
+      ? "Downgrade not allowed"
+      : !affordable
+        ? "Insufficient balance"
+        : "Rent this robot";
+
   return (
     <div>
       <Button
         type="button"
         onClick={onClick}
-        disabled={!affordable || loading}
-        variant={affordable ? "primary" : "outline"}
+        disabled={blocked || loading}
+        variant={blocked ? "outline" : "primary"}
         className="w-full"
       >
-        {loading ? "Processing..." : affordable ? "Rent this robot" : "Insufficient balance"}
+        {label}
       </Button>
       {error && <p className="mt-2 text-xs text-danger">{error}</p>}
     </div>
