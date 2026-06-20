@@ -11,7 +11,17 @@ import { loginAction } from "@/app/(auth)/actions";
 const inputClass =
   "w-full rounded-lg border border-border bg-background/60 px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-2 transition-colors focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-ring/30";
 
-export function LoginForm() {
+const STAFF = ["admin", "finance", "support"];
+
+export function LoginForm({
+  title = "Welcome back",
+  subtitle = "Log in to your Blue Fox client portal.",
+  showSignup = true,
+}: {
+  title?: string;
+  subtitle?: string;
+  showSignup?: boolean;
+}) {
   const router = useRouter();
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
@@ -27,18 +37,17 @@ export function LoginForm() {
       setLoading(false);
       return;
     }
-    router.push("/portal");
+    // Staff go to the admin panel; everyone else to the client portal.
+    router.push(res.role && STAFF.includes(res.role) ? "/admin" : "/portal");
   }
 
   return (
     <div className="mx-auto w-full max-w-md">
       <div className="rounded-2xl border border-border bg-surface p-6 sm:p-8">
         <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-          Welcome back
+          {title}
         </h1>
-        <p className="mt-1.5 text-sm text-muted">
-          Log in to your Blue Fox client portal.
-        </p>
+        <p className="mt-1.5 text-sm text-muted">{subtitle}</p>
 
         <form onSubmit={onSubmit} className="mt-6 space-y-4">
           <label className="block">
@@ -90,12 +99,14 @@ export function LoginForm() {
           </Button>
         </form>
 
-        <p className="mt-5 text-center text-sm text-muted">
-          Don&apos;t have an account?{" "}
-          <Link href="/register" className="inline-flex items-center gap-1 font-medium text-primary hover:underline">
-            Create one <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
-        </p>
+        {showSignup && (
+          <p className="mt-5 text-center text-sm text-muted">
+            Don&apos;t have an account?{" "}
+            <Link href="/register" className="inline-flex items-center gap-1 font-medium text-primary hover:underline">
+              Create one <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </p>
+        )}
       </div>
     </div>
   );
