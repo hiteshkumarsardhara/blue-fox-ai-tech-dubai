@@ -5,6 +5,7 @@ import { Logo } from "@/components/brand/logo";
 import { getCurrentUser } from "@/lib/auth";
 import { logoutAction } from "@/app/(auth)/actions";
 import { PortalNav } from "@/components/portal/portal-nav";
+import { getTranslations } from "@/lib/i18n";
 
 /** Auth-guarded shell for the client portal. */
 export default async function PortalLayout({
@@ -12,6 +13,7 @@ export default async function PortalLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const { t } = await getTranslations();
   const user = await getCurrentUser();
   if (!user) redirect("/login");
 
@@ -25,14 +27,14 @@ export default async function PortalLayout({
               href="/portal/account"
               className="hidden text-sm text-muted transition-colors hover:text-foreground sm:block"
             >
-              Hi, <span className="font-medium text-foreground">{user.name.split(" ")[0]}</span>
+              {t("portal.layout.greeting")} <span className="font-medium text-foreground">{user.name.split(" ")[0]}</span>
             </Link>
             <form action={logoutAction}>
               <button
                 type="submit"
                 className="inline-flex items-center gap-1.5 rounded-lg border border-border-strong px-3 py-1.5 text-sm font-medium text-muted transition-colors hover:text-foreground"
               >
-                <LogOut className="h-4 w-4" /> Logout
+                <LogOut className="h-4 w-4" /> {t("portal.layout.logout")}
               </button>
             </form>
           </div>

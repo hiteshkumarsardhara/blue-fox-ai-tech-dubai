@@ -9,16 +9,17 @@ import { buttonVariants } from "@/components/ui/button";
 import { getCurrentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { formatCents } from "@/lib/utils";
+import { getTranslations } from "@/lib/i18n";
 
 export const metadata: Metadata = { title: "Withdraw" };
 
-const METHOD_LABEL: Record<string, string> = {
-  crypto: "Crypto",
-  bank: "Bank transfer",
-  cash: "Cash pickup",
-};
-
 export default async function WithdrawPage() {
+  const { t } = await getTranslations();
+  const METHOD_LABEL: Record<string, string> = {
+    crypto: t("portal.withdraw.methodCrypto"),
+    bank: t("portal.withdraw.methodBank"),
+    cash: t("portal.withdraw.methodCash"),
+  };
   const user = await getCurrentUser();
   const [wallet, withdrawals] = await Promise.all([
     db.wallet.findUnique({ where: { userId: user!.id } }),
@@ -34,9 +35,9 @@ export default async function WithdrawPage() {
 
   return (
     <Container className="py-8">
-      <h1 className="text-2xl font-semibold tracking-tight">Withdraw funds</h1>
+      <h1 className="text-2xl font-semibold tracking-tight">{t("portal.withdraw.title")}</h1>
       <p className="mt-1 text-muted">
-        Available to withdraw:{" "}
+        {t("portal.withdraw.availableToWithdraw")}{" "}
         <span className="font-semibold text-foreground">{formatCents(available)}</span>
       </p>
 
@@ -49,26 +50,26 @@ export default async function WithdrawPage() {
               {kyc === "pending" ? <Clock className="h-5 w-5" /> : <ShieldAlert className="h-5 w-5" />}
             </span>
             <h2 className="mt-4 text-base font-semibold text-foreground">
-              {kyc === "pending" ? "Verification under review" : "Verify your identity first"}
+              {kyc === "pending" ? t("portal.withdraw.verificationUnderReview") : t("portal.withdraw.verifyIdentityFirst")}
             </h2>
             <p className="mt-1 text-sm text-muted">
               {kyc === "pending"
-                ? "Your documents are being reviewed. Withdrawals unlock once you're approved (usually 24–48h)."
-                : "To protect your funds, withdrawals require a verified identity. It only takes a minute."}
+                ? t("portal.withdraw.pendingHelp")
+                : t("portal.withdraw.verifyHelp")}
             </p>
             {kyc !== "pending" && (
               <Link href="/portal/kyc" className={buttonVariants({ className: "mt-4" })}>
                 <ShieldAlert className="h-4 w-4" />
-                {kyc === "rejected" ? "Re-submit documents" : "Verify identity"}
+                {kyc === "rejected" ? t("portal.withdraw.resubmitDocuments") : t("portal.withdraw.verifyIdentity")}
               </Link>
             )}
           </div>
         )}
 
         <div className="rounded-2xl border border-border bg-surface p-6">
-          <h2 className="text-base font-semibold text-foreground">Recent withdrawals</h2>
+          <h2 className="text-base font-semibold text-foreground">{t("portal.withdraw.recentWithdrawals")}</h2>
           {withdrawals.length === 0 ? (
-            <p className="mt-3 text-sm text-muted-2">No withdrawals yet.</p>
+            <p className="mt-3 text-sm text-muted-2">{t("portal.withdraw.noWithdrawals")}</p>
           ) : (
             <ul className="mt-3 divide-y divide-border">
               {withdrawals.map((w) => (

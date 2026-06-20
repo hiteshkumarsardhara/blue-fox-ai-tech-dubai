@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { LocalTime } from "@/components/ui/local-time";
+import { getTranslations } from "@/lib/i18n";
 import { getCurrentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { formatCents, cn } from "@/lib/utils";
@@ -49,6 +50,7 @@ function iconFor(type: string) {
 }
 
 export default async function TransactionsPage() {
+  const { t } = await getTranslations();
   const user = await getCurrentUser();
   const entries = await db.ledgerEntry.findMany({
     where: { userId: user!.id },
@@ -58,13 +60,13 @@ export default async function TransactionsPage() {
 
   return (
     <Container className="py-8">
-      <h1 className="text-2xl font-semibold tracking-tight">Transactions</h1>
-      <p className="mt-1 text-muted">Every movement in your wallet, newest first.</p>
+      <h1 className="text-2xl font-semibold tracking-tight">{t("portal.transactions.title")}</h1>
+      <p className="mt-1 text-muted">{t("portal.transactions.subtitle")}</p>
 
       <div className="mt-8 overflow-hidden rounded-2xl border border-border bg-surface">
         {entries.length === 0 ? (
           <p className="px-6 py-12 text-center text-sm text-muted-2">
-            No transactions yet. They’ll appear here once you deposit or earn.
+            {t("portal.transactions.empty")}
           </p>
         ) : (
           <ul className="divide-y divide-border">
@@ -103,7 +105,7 @@ export default async function TransactionsPage() {
                       {formatCents(Math.abs(e.amountCents))}
                     </p>
                     <p className="text-xs text-muted-2 tabular-nums">
-                      Bal {formatCents(e.balanceAfterCents)}
+                      {t("portal.transactions.balance")} {formatCents(e.balanceAfterCents)}
                     </p>
                   </div>
                 </li>

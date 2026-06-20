@@ -5,6 +5,7 @@ import { CheckCircle2 } from "lucide-react";
 import { updateProfileAction, changePasswordAction } from "@/app/portal/actions";
 import { Button } from "@/components/ui/button";
 import { PasswordInput } from "@/components/ui/password-input";
+import { useTranslations } from "@/components/i18n/i18n-provider";
 
 const inputClass =
   "w-full rounded-lg border border-border bg-background/60 px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-2 focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-ring/30";
@@ -28,6 +29,7 @@ function Err({ text }: { text: string }) {
 }
 
 export function ProfileForm({ phone, country }: { phone: string; country: string }) {
+  const { t } = useTranslations();
   const [form, setForm] = useState({ phone, country });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -46,12 +48,12 @@ export function ProfileForm({ phone, country }: { phone: string; country: string
 
   return (
     <form onSubmit={onSubmit} className="rounded-2xl border border-border bg-surface p-6">
-      <h2 className="text-base font-semibold text-foreground">Profile</h2>
-      <p className="mt-1 text-sm text-muted">Keep your contact details up to date.</p>
+      <h2 className="text-base font-semibold text-foreground">{t("portal.account.profile")}</h2>
+      <p className="mt-1 text-sm text-muted">{t("portal.account.profileSubtitle")}</p>
 
       <div className="mt-5 space-y-4">
         <label className="block">
-          <span className="mb-1.5 block text-xs font-medium text-muted">Phone / WhatsApp</span>
+          <span className="mb-1.5 block text-xs font-medium text-muted">{t("portal.account.phoneWhatsapp")}</span>
           <input
             value={form.phone}
             onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
@@ -60,7 +62,7 @@ export function ProfileForm({ phone, country }: { phone: string; country: string
           />
         </label>
         <label className="block">
-          <span className="mb-1.5 block text-xs font-medium text-muted">Country</span>
+          <span className="mb-1.5 block text-xs font-medium text-muted">{t("portal.account.country")}</span>
           <input
             value={form.country}
             onChange={(e) => setForm((f) => ({ ...f, country: e.target.value }))}
@@ -71,16 +73,17 @@ export function ProfileForm({ phone, country }: { phone: string; country: string
       </div>
 
       <Err text={error} />
-      <Saved show={done} text="Profile updated." />
+      <Saved show={done} text={t("portal.account.profileUpdated")} />
 
       <Button type="submit" disabled={loading} className="mt-5">
-        {loading ? "Saving..." : "Save changes"}
+        {loading ? t("portal.account.saving") : t("portal.account.saveChanges")}
       </Button>
     </form>
   );
 }
 
 export function PasswordForm() {
+  const { t } = useTranslations();
   const [form, setForm] = useState({ current: "", next: "", confirm: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -90,7 +93,7 @@ export function PasswordForm() {
     e.preventDefault();
     setError("");
     setDone(false);
-    if (form.next !== form.confirm) return setError("New passwords do not match.");
+    if (form.next !== form.confirm) return setError(t("portal.account.passwordsMismatch"));
     setLoading(true);
     const res = await changePasswordAction({ current: form.current, next: form.next });
     setLoading(false);
@@ -101,44 +104,44 @@ export function PasswordForm() {
 
   return (
     <form onSubmit={onSubmit} className="rounded-2xl border border-border bg-surface p-6">
-      <h2 className="text-base font-semibold text-foreground">Change password</h2>
-      <p className="mt-1 text-sm text-muted">Use at least 6 characters.</p>
+      <h2 className="text-base font-semibold text-foreground">{t("portal.account.changePassword")}</h2>
+      <p className="mt-1 text-sm text-muted">{t("portal.account.passwordHint")}</p>
 
       <div className="mt-5 space-y-4">
         <label className="block">
-          <span className="mb-1.5 block text-xs font-medium text-muted">Current password</span>
+          <span className="mb-1.5 block text-xs font-medium text-muted">{t("portal.account.currentPassword")}</span>
           <PasswordInput
             required
             value={form.current}
             onChange={(e) => setForm((f) => ({ ...f, current: e.target.value }))}
-            placeholder="Current password"
+            placeholder={t("portal.account.currentPasswordPlaceholder")}
           />
         </label>
         <label className="block">
-          <span className="mb-1.5 block text-xs font-medium text-muted">New password</span>
+          <span className="mb-1.5 block text-xs font-medium text-muted">{t("portal.account.newPassword")}</span>
           <PasswordInput
             required
             value={form.next}
             onChange={(e) => setForm((f) => ({ ...f, next: e.target.value }))}
-            placeholder="Min. 6 characters"
+            placeholder={t("portal.account.newPasswordPlaceholder")}
           />
         </label>
         <label className="block">
-          <span className="mb-1.5 block text-xs font-medium text-muted">Confirm new password</span>
+          <span className="mb-1.5 block text-xs font-medium text-muted">{t("portal.account.confirmNewPassword")}</span>
           <PasswordInput
             required
             value={form.confirm}
             onChange={(e) => setForm((f) => ({ ...f, confirm: e.target.value }))}
-            placeholder="Re-enter new password"
+            placeholder={t("portal.account.confirmNewPasswordPlaceholder")}
           />
         </label>
       </div>
 
       <Err text={error} />
-      <Saved show={done} text="Password changed." />
+      <Saved show={done} text={t("portal.account.passwordChanged")} />
 
       <Button type="submit" disabled={loading} className="mt-5">
-        {loading ? "Updating..." : "Update password"}
+        {loading ? t("portal.account.updating") : t("portal.account.updatePassword")}
       </Button>
     </form>
   );

@@ -6,10 +6,12 @@ import { ReferralLink } from "@/components/portal/referral-link";
 import { getCurrentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { formatCents } from "@/lib/utils";
+import { getTranslations } from "@/lib/i18n";
 
 export const metadata: Metadata = { title: "Referrals" };
 
 export default async function ReferralsPage() {
+  const { t } = await getTranslations();
   const user = await getCurrentUser();
 
   const [referrals, commissionAgg, pctRow] = await Promise.all([
@@ -30,26 +32,25 @@ export default async function ReferralsPage() {
   const pct = pctRow?.value ?? "5";
 
   const stats = [
-    { label: "Total referrals", value: String(referrals.length), icon: Users },
-    { label: "Active investors", value: String(invested), icon: TrendingUp },
-    { label: "Commission earned", value: formatCents(totalEarned), icon: Gift },
+    { label: t("portal.referrals.totalReferrals"), value: String(referrals.length), icon: Users },
+    { label: t("portal.referrals.activeInvestors"), value: String(invested), icon: TrendingUp },
+    { label: t("portal.referrals.commissionEarned"), value: formatCents(totalEarned), icon: Gift },
   ];
 
   return (
     <Container className="py-8">
-      <h1 className="text-2xl font-semibold tracking-tight">Refer &amp; earn</h1>
+      <h1 className="text-2xl font-semibold tracking-tight">{t("portal.referrals.title")}</h1>
       <p className="mt-1 text-muted">
-        Share your link. When someone you refer rents a robot, you earn{" "}
-        <span className="font-semibold text-foreground">{pct}%</span> of their deposit — credited
-        straight to your wallet.
+        {t("portal.referrals.introBefore")}{" "}
+        <span className="font-semibold text-foreground">{pct}%</span> {t("portal.referrals.introAfter")}
       </p>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-2">
         {/* Share card */}
         <div className="rounded-2xl border border-border bg-surface p-6">
-          <h2 className="text-base font-semibold text-foreground">Invite friends</h2>
+          <h2 className="text-base font-semibold text-foreground">{t("portal.referrals.inviteFriends")}</h2>
           <p className="mt-1 text-sm text-muted">
-            They get started in a minute; you earn on every robot they rent.
+            {t("portal.referrals.inviteSubtitle")}
           </p>
           <div className="mt-5">
             <ReferralLink code={user!.referralCode} />
@@ -73,11 +74,11 @@ export default async function ReferralsPage() {
       </div>
 
       {/* Referred users */}
-      <h2 className="mt-12 text-lg font-semibold text-foreground">Your referrals</h2>
+      <h2 className="mt-12 text-lg font-semibold text-foreground">{t("portal.referrals.yourReferrals")}</h2>
       <div className="mt-4 overflow-hidden rounded-2xl border border-border bg-surface">
         {referrals.length === 0 ? (
           <p className="px-6 py-10 text-center text-sm text-muted-2">
-            No referrals yet. Share your link to get started.
+            {t("portal.referrals.emptyState")}
           </p>
         ) : (
           <ul className="divide-y divide-border">
@@ -85,7 +86,7 @@ export default async function ReferralsPage() {
               <li key={r.id} className="flex items-center justify-between gap-3 px-5 py-3.5">
                 <div>
                   <p className="text-sm font-medium text-foreground">{r.name}</p>
-                  <p className="text-xs text-muted-2">Joined <LocalTime iso={r.createdAt.toISOString()} mode="date" /></p>
+                  <p className="text-xs text-muted-2">{t("portal.referrals.joined")} <LocalTime iso={r.createdAt.toISOString()} mode="date" /></p>
                 </div>
                 <span
                   className={
@@ -95,7 +96,7 @@ export default async function ReferralsPage() {
                       : "border-border-strong bg-surface-2 text-muted-2")
                   }
                 >
-                  {r._count.contracts > 0 ? "Investing" : "Signed up"}
+                  {r._count.contracts > 0 ? t("portal.referrals.statusInvesting") : t("portal.referrals.statusSignedUp")}
                 </span>
               </li>
             ))}

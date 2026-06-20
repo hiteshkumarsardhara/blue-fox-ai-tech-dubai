@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { rentAction } from "@/app/portal/actions";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "@/components/i18n/i18n-provider";
 
 export function RentButton({
   robotId,
@@ -14,6 +15,7 @@ export function RentButton({
   affordable: boolean;
   allowed?: boolean;
 }) {
+  const { t } = useTranslations();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -33,12 +35,12 @@ export function RentButton({
   }
 
   const label = loading
-    ? "Processing..."
+    ? t("portal.invest.processing")
     : !allowed
-      ? "Upgrade only"
+      ? t("portal.invest.upgradeOnly")
       : !affordable
-        ? "Insufficient balance"
-        : "Rent this robot";
+        ? t("portal.invest.insufficientBalance")
+        : t("portal.invest.rentThisRobot");
 
   return (
     <div>

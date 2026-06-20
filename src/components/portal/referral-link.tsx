@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { Copy, Check } from "lucide-react";
+import { useTranslations } from "@/components/i18n/i18n-provider";
 
 export function ReferralLink({ code }: { code: string }) {
+  const { t } = useTranslations();
   const [origin, setOrigin] = useState("");
   const [copied, setCopied] = useState<"link" | "code" | null>(null);
 
@@ -25,7 +27,7 @@ export function ReferralLink({ code }: { code: string }) {
   return (
     <div className="space-y-4">
       <div>
-        <p className="mb-1.5 text-xs font-medium text-muted">Your referral link</p>
+        <p className="mb-1.5 text-xs font-medium text-muted">{t("portal.referrals.yourReferralLink")}</p>
         <div className="flex gap-2">
           <input
             readOnly
@@ -39,13 +41,13 @@ export function ReferralLink({ code }: { code: string }) {
             className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-primary px-3.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
             {copied === "link" ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-            {copied === "link" ? "Copied" : "Copy"}
+            {copied === "link" ? t("portal.referrals.copied") : t("portal.referrals.copy")}
           </button>
         </div>
       </div>
 
       <div>
-        <p className="mb-1.5 text-xs font-medium text-muted">Your referral code</p>
+        <p className="mb-1.5 text-xs font-medium text-muted">{t("portal.referrals.yourReferralCode")}</p>
         <button
           type="button"
           onClick={() => copy(code, "code")}

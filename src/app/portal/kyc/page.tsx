@@ -10,6 +10,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { parseFileUrls } from "@/lib/kyc-storage";
 import { cn } from "@/lib/utils";
+import { getTranslations } from "@/lib/i18n";
 
 export const metadata: Metadata = { title: "Verify identity" };
 
@@ -56,6 +57,7 @@ const HUB = {
 } as const;
 
 export default async function KycPage() {
+  const { t } = await getTranslations();
   const user = await getCurrentUser();
   const status = (user!.kycStatus ?? "none") as keyof typeof HUB;
   const records = await db.kycRecord.findMany({
@@ -66,14 +68,16 @@ export default async function KycPage() {
 
   const hub = HUB[status] ?? HUB.none;
   const HubIcon = hub.icon;
+  const hubLabel = t(`portal.kyc.hubLabel_${status}`);
+  const hubMsg = t(`portal.kyc.hubMsg_${status}`);
   const showForm = status === "none" || status === "rejected";
   const rejectionReason =
     status === "rejected" ? records.find((r) => r.status === "rejected")?.note : null;
 
   return (
     <Container className="py-8">
-      <h1 className="text-2xl font-semibold tracking-tight">Identity verification</h1>
-      <p className="mt-1 text-muted">Verify once to enable withdrawals from your wallet.</p>
+      <h1 className="text-2xl font-semibold tracking-tight">{t("portal.kyc.title")}</h1>
+      <p className="mt-1 text-muted">{t("portal.kyc.subtitle")}</p>
 
       {/* Status hub */}
       <div className="mt-6 flex flex-wrap items-center gap-4 rounded-2xl border border-border bg-surface p-5">
@@ -81,19 +85,19 @@ export default async function KycPage() {
           <HubIcon className="h-6 w-6" />
         </span>
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-semibold text-foreground">{hub.label}</p>
-          <p className="text-sm text-muted">{hub.msg}</p>
+          <p className="text-sm font-semibold text-foreground">{hubLabel}</p>
+          <p className="text-sm text-muted">{hubMsg}</p>
         </div>
         {status === "approved" && (
           <Link href="/portal/withdraw" className={buttonVariants({ size: "sm" })}>
-            Withdraw funds
+            {t("portal.kyc.withdrawFunds")}
           </Link>
         )}
       </div>
 
       {rejectionReason && (
         <div className="mt-4 rounded-xl border border-danger/30 bg-danger-soft px-4 py-3 text-sm">
-          <span className="font-medium text-danger">Reason: </span>
+          <span className="font-medium text-danger">{t("portal.kyc.reasonLabel")} </span>
           <span className="text-foreground">{rejectionReason}</span>
         </div>
       )}
@@ -104,17 +108,17 @@ export default async function KycPage() {
         ) : (
           <div className="rounded-2xl border border-border bg-surface p-6">
             <h2 className="text-base font-semibold text-foreground">
-              {status === "pending" ? "Submitted — under review" : "You're verified"}
+              {status === "pending" ? t("portal.kyc.submittedUnderReview") : t("portal.kyc.youreVerified")}
             </h2>
-            <p className="mt-1 text-sm text-muted">{hub.msg}</p>
+            <p className="mt-1 text-sm text-muted">{hubMsg}</p>
           </div>
         )}
 
         {/* Submission history */}
         <div className="rounded-2xl border border-border bg-surface p-6">
-          <h2 className="text-base font-semibold text-foreground">Your submissions</h2>
+          <h2 className="text-base font-semibold text-foreground">{t("portal.kyc.yourSubmissions")}</h2>
           {records.length === 0 ? (
-            <p className="mt-3 text-sm text-muted-2">No submissions yet.</p>
+            <p className="mt-3 text-sm text-muted-2">{t("portal.kyc.noSubmissions")}</p>
           ) : (
             <ul className="mt-3 space-y-4">
               {records.map((r) => {
@@ -124,7 +128,7 @@ export default async function KycPage() {
                     <div className="flex items-center justify-between gap-3">
                       <div>
                         <p className="text-sm font-medium text-foreground">
-                          {DOC_LABELS[r.docType] ?? r.docType}
+                          {DOC_LABELS[r.docType] ? t(`portal.kyc.doc_${r.docType}`) : r.docType}
                         </p>
                         <p className="text-xs text-muted-2"><LocalTime iso={r.createdAt.toISOString()} /></p>
                       </div>
@@ -141,7 +145,7 @@ export default async function KycPage() {
                             className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-surface px-2.5 py-1 text-xs font-medium text-muted transition-colors hover:text-foreground"
                           >
                             <FileText className="h-3.5 w-3.5" />
-                            {SLOT_LABELS[f.slot] ?? f.slot}
+                            {SLOT_LABELS[f.slot] ? t(`portal.kyc.slot_${f.slot}`) : f.slot}
                           </a>
                         ))}
                       </div>
