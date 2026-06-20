@@ -56,3 +56,6 @@ __pycache__/
 /dev.db-journal
 prisma/*.db
 prisma/*.db-journal
+
+# uploaded KYC documents (sensitive PII — never commit)
+/uploads/

@@ -259,3 +259,66 @@ export async function rejectWithdrawal(withdrawalId: string, adminId: string, no
     await audit(tx, adminId, "withdrawal_rejected", "Withdrawal", wd.id);
   });
 }
+
+/* ───────────────────────────── KYC ───────────────────────────── */
+
+export async function submitKyc(
+  userId: string,
+  input: { docType: string; docNumber?: string; fileUrls: string },
+) {
+  if (!input.docType?.trim()) throw new Error("Select a document type.");
+  if (!input.fileUrls?.trim()) throw new Error("Upload your documents.");
+  return db.$transaction(async (tx) => {
+    // Re-check status inside the transaction so two concurrent submits can't
+    // both create a pending record (the action-level guard is a stale read).
+    const current = await tx.user.findUnique({
+      where: { id: userId },
+      select: { kycStatus: true },
+    });
+    if (!current) throw new Error("User not found");
+    if (current.kycStatus === "pending") throw new Error("Your documents are already under review.");
+    if (current.kycStatus === "approved") throw new Error("Your identity is already verified.");
+
+    const rec = await tx.kycRecord.create({
+      data: {
+        userId,
+        docType: input.docType,
+        docNumber: input.docNumber ?? null,
+        fileUrls: input.fileUrls,
+        status: "pending",
+      },
+    });
+    await tx.user.update({ where: { id: userId }, data: { kycStatus: "pending" } });
+    await audit(tx, userId, "kyc_submitted", "KycRecord", rec.id);
+    return rec;
+  });
+}
+
+export async function approveKyc(kycId: string, adminId: string) {
+  return db.$transaction(async (tx) => {
+    const rec = await tx.kycRecord.findUnique({ where: { id: kycId } });
+    if (!rec) throw new Error("KYC record not found");
+    if (rec.status !== "pending") throw new Error("KYC already reviewed");
+    await tx.kycRecord.update({
+      where: { id: kycId },
+      data: { status: "approved", reviewedById: adminId, reviewedAt: new Date(), note: null },
+    });
+    await tx.user.update({ where: { id: rec.userId }, data: { kycStatus: "approved" } });
+    await audit(tx, adminId, "kyc_approved", "KycRecord", rec.id);
+  });
+}
+
+export async function rejectKyc(kycId: string, adminId: string, reason: string) {
+  if (!reason?.trim()) throw new Error("A rejection reason is required.");
+  return db.$transaction(async (tx) => {
+    const rec = await tx.kycRecord.findUnique({ where: { id: kycId } });
+    if (!rec) throw new Error("KYC record not found");
+    if (rec.status !== "pending") throw new Error("KYC already reviewed");
+    await tx.kycRecord.update({
+      where: { id: kycId },
+      data: { status: "rejected", reviewedById: adminId, reviewedAt: new Date(), note: reason.trim() },
+    });
+    await tx.user.update({ where: { id: rec.userId }, data: { kycStatus: "rejected" } });
+    await audit(tx, adminId, "kyc_rejected", "KycRecord", rec.id);
+  });
+}

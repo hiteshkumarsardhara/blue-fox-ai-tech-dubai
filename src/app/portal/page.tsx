@@ -8,6 +8,8 @@ import {
   TrendingUp,
   Wallet,
   ArrowRight,
+  ShieldCheck,
+  ShieldAlert,
 } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Badge } from "@/components/ui/badge";
@@ -64,6 +66,37 @@ export default async function PortalDashboard() {
         </div>
         <Badge tone="success">Account active</Badge>
       </div>
+
+      {/* KYC nudge */}
+      {user?.kycStatus !== "approved" && (
+        <Link
+          href="/portal/kyc"
+          className="mt-6 flex items-center gap-3 rounded-2xl border border-warning/30 bg-warning/5 px-5 py-4 transition-colors hover:border-warning/50"
+        >
+          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-warning/30 bg-warning/10 text-warning">
+            {user?.kycStatus === "pending" ? (
+              <ShieldCheck className="h-5 w-5" />
+            ) : (
+              <ShieldAlert className="h-5 w-5" />
+            )}
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-semibold text-foreground">
+              {user?.kycStatus === "pending"
+                ? "Identity verification under review"
+                : user?.kycStatus === "rejected"
+                  ? "Verification needs your attention"
+                  : "Verify your identity"}
+            </p>
+            <p className="text-sm text-muted">
+              {user?.kycStatus === "pending"
+                ? "We're reviewing your documents — withdrawals unlock once approved."
+                : "Required to enable withdrawals. It only takes a minute."}
+            </p>
+          </div>
+          <ArrowRight className="h-4 w-4 shrink-0 text-muted-2" />
+        </Link>
+      )}
 
       {/* Wallet stats */}
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

@@ -148,15 +148,17 @@ model LedgerEntry {
 }
 
 model KycRecord {
-  id           String   @id @default(cuid())
+  id           String    @id @default(cuid())
   userId       String
-  user         User     @relation(fields: [userId], references: [id])
+  user         User      @relation(fields: [userId], references: [id])
   docType      String
   docNumber    String?
-  fileUrls     String? // comma-separated URLs
-  status       String   @default("pending") // pending | approved | rejected
+  fileUrls     String? // comma-separated "slot:filename" entries
+  status       String    @default("pending") // pending | approved | rejected
+  note         String? // reject reason (shown to client) / review note
   reviewedById String?
-  createdAt    DateTime @default(now())
+  reviewedAt   DateTime?
+  createdAt    DateTime  @default(now())
 }
 
 model AuditLog {

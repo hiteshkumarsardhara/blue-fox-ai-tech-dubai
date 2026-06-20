@@ -3,9 +3,11 @@ import { cn } from "@/lib/utils";
 const TONES: Record<string, string> = {
   pending: "bg-warning/10 text-warning border-warning/30",
   confirmed: "bg-success-soft text-success border-success/30",
+  approved: "bg-success-soft text-success border-success/30",
   paid: "bg-success-soft text-success border-success/30",
   active: "bg-primary-soft text-primary border-primary/30",
   completed: "bg-surface-2 text-muted border-border-strong",
+  none: "bg-surface-2 text-muted border-border-strong",
   rejected: "bg-danger-soft text-danger border-danger/30",
   processing: "bg-primary-soft text-primary border-primary/30",
 };

@@ -56,8 +56,11 @@ export async function getSession(): Promise<Session | null> {
 export async function getCurrentUser() {
   const session = await getSession();
   if (!session) return null;
-  return db.user.findUnique({
+  const user = await db.user.findUnique({
     where: { id: session.userId },
     include: { wallet: true },
   });
+  // A suspended account must lose access even with a still-valid session cookie.
+  if (!user || user.status !== "active") return null;
+  return user;
 }

@@ -8,6 +8,7 @@ import {
   Wallet,
   TrendingUp,
   ArrowRight,
+  ShieldCheck,
 } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { db } from "@/lib/db";
@@ -19,6 +20,7 @@ export default async function AdminOverview() {
   const [
     pendingDeposits,
     pendingWithdrawals,
+    pendingKyc,
     activeContracts,
     clientCount,
     walletAgg,
@@ -26,6 +28,7 @@ export default async function AdminOverview() {
   ] = await Promise.all([
     db.deposit.count({ where: { status: "pending" } }),
     db.withdrawal.count({ where: { status: "pending" } }),
+    db.kycRecord.count({ where: { status: "pending" } }),
     db.contract.count({ where: { status: "active" } }),
     db.user.count({ where: { role: "client" } }),
     db.wallet.aggregate({
@@ -48,6 +51,13 @@ export default async function AdminOverview() {
       count: pendingWithdrawals,
       icon: ArrowUpFromLine,
       tone: pendingWithdrawals > 0 ? "text-warning" : "text-muted-2",
+    },
+    {
+      href: "/admin/kyc",
+      label: "Pending KYC",
+      count: pendingKyc,
+      icon: ShieldCheck,
+      tone: pendingKyc > 0 ? "text-warning" : "text-muted-2",
     },
     {
       href: "/admin/contracts",

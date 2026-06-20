@@ -8,6 +8,7 @@ import {
   ArrowUpFromLine,
   Bot,
   Users,
+  ShieldCheck,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -15,6 +16,7 @@ const LINKS = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard },
   { href: "/admin/deposits", label: "Deposits", icon: ArrowDownToLine },
   { href: "/admin/withdrawals", label: "Withdrawals", icon: ArrowUpFromLine },
+  { href: "/admin/kyc", label: "KYC", icon: ShieldCheck },
   { href: "/admin/contracts", label: "Contracts", icon: Bot },
   { href: "/admin/users", label: "Users", icon: Users },
 ];

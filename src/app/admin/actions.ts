@@ -8,6 +8,8 @@ import {
   creditEarning,
   payWithdrawal,
   rejectWithdrawal,
+  approveKyc,
+  rejectKyc,
 } from "@/lib/ledger";
 
 type Result = { ok: true } | { ok: false; error: string };
@@ -77,6 +79,32 @@ export async function rejectWithdrawalAction(withdrawalId: string): Promise<Resu
   try {
     await rejectWithdrawal(withdrawalId, admin.id);
     revalidatePath("/admin/withdrawals");
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Failed." };
+  }
+}
+
+export async function approveKycAction(kycId: string): Promise<Result> {
+  const admin = await requireStaff();
+  if (!admin) return { ok: false, error: "Not authorized." };
+  try {
+    await approveKyc(kycId, admin.id);
+    revalidatePath("/admin/kyc");
+    revalidatePath("/admin");
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Failed." };
+  }
+}
+
+export async function rejectKycAction(kycId: string, reason: string): Promise<Result> {
+  const admin = await requireStaff();
+  if (!admin) return { ok: false, error: "Not authorized." };
+  try {
+    await rejectKyc(kycId, admin.id, reason);
+    revalidatePath("/admin/kyc");
+    revalidatePath("/admin");
     return { ok: true };
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "Failed." };
