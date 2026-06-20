@@ -81,7 +81,7 @@ export default async function HomePage() {
 
               {/* Reviews */}
               <div className="mt-7 flex flex-wrap items-center gap-3">
-                <span className="text-sm font-semibold text-foreground">Excellent</span>
+                <span className="text-sm font-semibold text-foreground">{t("home.reviewsExcellent")}</span>
                 <div className="flex gap-1">
                   {Array.from({ length: 5 }).map((_, i) => (
                     <span key={i} className="grid h-5 w-5 place-items-center rounded-[3px] bg-success">
@@ -90,7 +90,7 @@ export default async function HomePage() {
                   ))}
                 </div>
                 <span className="text-sm text-muted">
-                  Rated <span className="font-semibold text-foreground">4.8/5</span> on{" "}
+                  {t("home.reviewsRated")} <span className="font-semibold text-foreground">4.8/5</span> {t("home.reviewsOn")}{" "}
                   <span className="font-semibold text-success">Trustpilot</span>
                 </span>
               </div>
@@ -98,7 +98,7 @@ export default async function HomePage() {
               {/* Plans / packages card */}
               <div className="mt-7 max-w-md rounded-2xl border border-border bg-surface/70 p-4 backdrop-blur">
                 <p className="mb-3 text-[11px] font-semibold uppercase tracking-wider text-muted-2">
-                  Popular packages
+                  {t("home.popularPackages")}
                 </p>
                 <ul className="space-y-2.5">
                   {[packages[0], packages[3], packages[7]].map((p) => (
@@ -128,12 +128,12 @@ export default async function HomePage() {
           <Reveal delay={0.2}>
             <div className="mt-16 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-4">
               {[
-                { node: <CountUp value={12.4} decimals={1} prefix="$" suffix="M" />, label: "Assets managed" },
-                { node: <CountUp value={2400} suffix="+" />, label: "Active investors" },
-                { node: <CountUp value={6} suffix="%" />, label: "Avg. monthly return" },
-                { node: <CountUp value={4.8} decimals={1} prefix="$" suffix="M" />, label: "Paid to clients" },
+                { id: "assetsManaged", node: <CountUp value={12.4} decimals={1} prefix="$" suffix="M" />, label: t("home.statAssetsManaged") },
+                { id: "activeInvestors", node: <CountUp value={2400} suffix="+" />, label: t("home.statActiveInvestors") },
+                { id: "avgMonthlyReturn", node: <CountUp value={6} suffix="%" />, label: t("home.statAvgMonthlyReturn") },
+                { id: "paidToClients", node: <CountUp value={4.8} decimals={1} prefix="$" suffix="M" />, label: t("home.statPaidToClients") },
               ].map((s) => (
-                <div key={s.label} className="bg-surface px-5 py-5 text-center">
+                <div key={s.id} className="bg-surface px-5 py-5 text-center">
                   <p className="text-2xl font-semibold text-foreground sm:text-3xl">{s.node}</p>
                   <p className="mt-1 text-xs font-medium text-muted">{s.label}</p>
                 </div>
@@ -141,8 +141,7 @@ export default async function HomePage() {
             </div>
           </Reveal>
           <p className="mt-3 text-center text-[11px] text-muted-2">
-            Figures are illustrative. Returns come from live forex trading and are
-            not guaranteed. Capital is at risk.
+            {t("home.statsDisclaimer")}
           </p>
         </Container>
       </section>
@@ -150,15 +149,15 @@ export default async function HomePage() {
       {/* ──────────────────── Deposit / withdraw methods ──────────────────── */}
       <section className="border-y border-border bg-surface/30">
         <Container className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 py-7 text-sm text-muted-2">
-          <span className="text-xs uppercase tracking-widest">Deposit &amp; withdraw with</span>
+          <span className="text-xs uppercase tracking-widest">{t("home.depositWithdrawWith")}</span>
           {[
-            { icon: Bitcoin, label: "Crypto (USDT/USDC)" },
-            { icon: Building2, label: "Bank transfer" },
-            { icon: Banknote, label: "Cash payout" },
-            { icon: Wallet, label: "Instant wallet" },
-          ].map((t) => (
-            <span key={t.label} className="flex items-center gap-1.5 font-medium text-muted">
-              <t.icon className="h-4 w-4 text-primary" /> {t.label}
+            { id: "crypto", icon: Bitcoin, label: t("home.methodCrypto") },
+            { id: "bank", icon: Building2, label: t("home.methodBankTransfer") },
+            { id: "cash", icon: Banknote, label: t("home.methodCashPayout") },
+            { id: "wallet", icon: Wallet, label: t("home.methodInstantWallet") },
+          ].map((m) => (
+            <span key={m.id} className="flex items-center gap-1.5 font-medium text-muted">
+              <m.icon className="h-4 w-4 text-primary" /> {m.label}
             </span>
           ))}
         </Container>
@@ -169,9 +168,9 @@ export default async function HomePage() {
         <Container>
           <Reveal>
             <SectionHeading
-              eyebrow="Membership Packages"
-              title="Choose your Blue Fox bot"
-              subtitle={`A one-time $${REGISTRATION_FEE} registration, then pick a package. A fixed monthly ROI is paid to your wallet — withdraw anytime.`}
+              eyebrow={t("home.packagesEyebrow")}
+              title={t("home.packagesTitle")}
+              subtitle={`${t("home.packagesSubtitlePre")} $${REGISTRATION_FEE} ${t("home.packagesSubtitlePost")}`}
             />
           </Reveal>
 
@@ -183,8 +182,8 @@ export default async function HomePage() {
                   <Crown className="h-5 w-5" />
                 </span>
                 <div>
-                  <h3 className="text-lg font-semibold text-foreground">Golden Packages</h3>
-                  <p className="text-xs text-muted">18-month contract · capital back in 3 parts</p>
+                  <h3 className="text-lg font-semibold text-foreground">{t("home.goldenPackages")}</h3>
+                  <p className="text-xs text-muted">{t("home.goldenSubtitle")}</p>
                 </div>
               </div>
               <div className="mt-6 grid gap-6 md:grid-cols-2">
@@ -205,8 +204,8 @@ export default async function HomePage() {
                   <Gem className="h-5 w-5" />
                 </span>
                 <div>
-                  <h3 className="text-lg font-semibold text-foreground">Diamond Packages</h3>
-                  <p className="text-xs text-muted">24-month contract · capital back in 3 parts</p>
+                  <h3 className="text-lg font-semibold text-foreground">{t("home.diamondPackages")}</h3>
+                  <p className="text-xs text-muted">{t("home.diamondSubtitle")}</p>
                 </div>
               </div>
               <div className="mt-6 grid gap-6 md:grid-cols-2">
@@ -220,8 +219,7 @@ export default async function HomePage() {
           </Reveal>
 
           <p className="mx-auto mt-10 max-w-2xl text-center text-xs leading-relaxed text-muted-2">
-            {capitalReturnNote} Returns are generated by live forex trading and are
-            not guaranteed; capital is at risk.
+            {capitalReturnNote} {t("home.packagesRiskNote")}
           </p>
         </Container>
       </section>
@@ -231,16 +229,16 @@ export default async function HomePage() {
         <Container>
           <Reveal>
             <SectionHeading
-              eyebrow="How it works"
-              title="From sign-up to monthly income in 4 steps"
-              subtitle={`A one-time $${REGISTRATION_FEE} registration fee, then deposit and start earning. Everything is managed from your client portal.`}
+              eyebrow={t("home.howEyebrow")}
+              title={t("home.howTitle")}
+              subtitle={`${t("home.howSubtitlePre")} $${REGISTRATION_FEE} ${t("home.howSubtitlePost")}`}
             />
           </Reveal>
           <div className="mt-12 grid gap-6 md:grid-cols-4">
             {howItWorks.map((step, i) => {
               const Icon = [UserPlus, Wallet, Gauge, Banknote][i];
               return (
-                <Reveal key={step.title} delay={i * 0.1}>
+                <Reveal key={step.tKey} delay={i * 0.1}>
                   <div className="h-full rounded-2xl border border-border bg-surface p-6">
                     <div className="flex items-center justify-between">
                       <div className="grid h-11 w-11 place-items-center rounded-xl bg-primary-soft ring-1 ring-primary/30">
@@ -250,8 +248,8 @@ export default async function HomePage() {
                         {i + 1}
                       </span>
                     </div>
-                    <h3 className="mt-4 font-semibold text-foreground">{step.title}</h3>
-                    <p className="mt-1.5 text-sm leading-relaxed text-muted">{step.text}</p>
+                    <h3 className="mt-4 font-semibold text-foreground">{t(`home.${step.tKey}Title`)}</h3>
+                    <p className="mt-1.5 text-sm leading-relaxed text-muted">{t(`home.${step.tKey}Desc`)}</p>
                   </div>
                 </Reveal>
               );
@@ -268,21 +266,21 @@ export default async function HomePage() {
         <Container>
           <Reveal>
             <SectionHeading
-              eyebrow="Why Blue Fox"
-              title="Managed, transparent, and built on real trading"
-              subtitle="No spreadsheets, no MetaTrader setup. We run the robots — you watch your wallet grow."
+              eyebrow={t("home.whyEyebrow")}
+              title={t("home.whyTitle")}
+              subtitle={t("home.whySubtitle")}
             />
           </Reveal>
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {[
-              { icon: LineChart, title: "Fixed monthly ROI", text: "A fixed monthly ROI for your package — from 4% to 8% per month — credited straight to your wallet." },
-              { icon: Wallet, title: "Withdraw your way", text: "Cash out in crypto, bank transfer or cash. Request from the portal; our team handles the rest." },
-              { icon: ShieldCheck, title: "Verified trading", text: "Robot performance is tracked on MyFXBook/FXBlue. We invest your capital through live forex markets." },
-              { icon: Lock, title: "Fixed-term contracts", text: "18 or 24-month contracts give the strategy room to compound. You always see your term progress." },
-              { icon: Gauge, title: "A package for every budget", text: "From $3,333 Golden to $55,555 Diamond — pick the package that matches your budget and goals." },
-              { icon: Sparkles, title: "Full client portal", text: "Deposit, invest, track earnings, refer friends and withdraw — all from one modern dashboard." },
+              { id: "fixedRoi", icon: LineChart, title: t("home.whyFixedRoiTitle"), text: t("home.whyFixedRoiText") },
+              { id: "withdraw", icon: Wallet, title: t("home.whyWithdrawTitle"), text: t("home.whyWithdrawText") },
+              { id: "verified", icon: ShieldCheck, title: t("home.whyVerifiedTitle"), text: t("home.whyVerifiedText") },
+              { id: "fixedTerm", icon: Lock, title: t("home.whyFixedTermTitle"), text: t("home.whyFixedTermText") },
+              { id: "everyBudget", icon: Gauge, title: t("home.whyEveryBudgetTitle"), text: t("home.whyEveryBudgetText") },
+              { id: "portal", icon: Sparkles, title: t("home.whyPortalTitle"), text: t("home.whyPortalText") },
             ].map((f, i) => (
-              <Reveal key={f.title} delay={(i % 3) * 0.08}>
+              <Reveal key={f.id} delay={(i % 3) * 0.08}>
                 <div className="h-full rounded-2xl border border-border bg-surface p-6">
                   <f.icon className="h-6 w-6 text-accent" />
                   <h3 className="mt-4 font-semibold text-foreground">{f.title}</h3>
@@ -298,15 +296,15 @@ export default async function HomePage() {
       <section className="border-y border-border bg-surface/30 py-20 sm:py-24">
         <Container>
           <Reveal>
-            <SectionHeading eyebrow="Trusted by investors" title="What our clients say" />
+            <SectionHeading eyebrow={t("home.testimonialsEyebrow")} title={t("home.testimonialsTitle")} />
           </Reveal>
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {[
-              { name: "Rashid A.", role: "Investor · Dubai", quote: "Deposited in USDT, chose the Bf Trader bot, and my monthly ROI hits my wallet on time. Withdrew to cash twice without issues." },
-              { name: "Elena V.", role: "Investor · EU", quote: "I love that I don't have to touch MetaTrader. The dashboard shows exactly what I earn each month." },
-              { name: "James O.", role: "Investor · UK", quote: "Started on the Bf Beginner bot to test it. Support answered on WhatsApp fast. Now on a Diamond 24-month contract." },
-            ].map((t, i) => (
-              <Reveal key={t.name} delay={i * 0.1}>
+              { id: "rashid", name: "Rashid A.", role: t("home.testimonial1Role"), quote: t("home.testimonial1Quote") },
+              { id: "elena", name: "Elena V.", role: t("home.testimonial2Role"), quote: t("home.testimonial2Quote") },
+              { id: "james", name: "James O.", role: t("home.testimonial3Role"), quote: t("home.testimonial3Quote") },
+            ].map((r, i) => (
+              <Reveal key={r.id} delay={i * 0.1}>
                 <figure className="flex h-full flex-col rounded-2xl border border-border bg-surface p-6">
                   <div className="flex gap-0.5 text-accent">
                     {Array.from({ length: 5 }).map((_, n) => (
@@ -314,11 +312,11 @@ export default async function HomePage() {
                     ))}
                   </div>
                   <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-muted">
-                    “{t.quote}”
+                    “{r.quote}”
                   </blockquote>
                   <figcaption className="mt-5 border-t border-border pt-4">
-                    <p className="text-sm font-medium text-foreground">{t.name}</p>
-                    <p className="text-xs text-muted-2">{t.role}</p>
+                    <p className="text-sm font-medium text-foreground">{r.name}</p>
+                    <p className="text-xs text-muted-2">{r.role}</p>
                   </figcaption>
                 </figure>
               </Reveal>
@@ -335,18 +333,17 @@ export default async function HomePage() {
               <div className="pointer-events-none absolute -bottom-24 left-1/2 h-72 w-[640px] -translate-x-1/2 rounded-full bg-primary/20 blur-[120px]" />
               <div className="relative mx-auto max-w-2xl">
                 <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-                  Put your capital to work
+                  {t("home.ctaTitle")}
                 </h2>
                 <p className="mt-4 text-muted">
-                  Register in minutes, deposit, and let a Blue Fox robot trade for
-                  you. {site.location}.
+                  {t("home.ctaSubtitle")} {site.location}.
                 </p>
                 <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
                   <Link href="/register" className={buttonVariants({ variant: "primary", size: "lg" })}>
-                    Create your account <ArrowRight className="h-4 w-4" />
+                    {t("home.ctaCreateAccount")} <ArrowRight className="h-4 w-4" />
                   </Link>
                   <Link href="/contact" className={buttonVariants({ variant: "outline", size: "lg" })}>
-                    Talk to us
+                    {t("home.ctaTalkToUs")}
                   </Link>
                 </div>
               </div>

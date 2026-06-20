@@ -39,41 +39,45 @@ export const mainNav: NavItem[] = [
   { label: "Contact Us", href: "/contact", tKey: "nav.contact" },
 ];
 
-export const footerNav: { title: string; links: NavItem[] }[] = [
+export const footerNav: { title: string; titleKey: string; links: NavItem[] }[] = [
   {
     title: "Platform",
+    titleKey: "footer.platform",
     links: [
-      { label: "Our Services", href: "/services" },
-      { label: "Packages", href: "/#packages" },
-      { label: "How it works", href: "/#how-it-works" },
-      { label: "Live Results", href: "/results" },
+      { label: "Our Services", href: "/services", tKey: "footer.ourServices" },
+      { label: "Packages", href: "/#packages", tKey: "footer.packages" },
+      { label: "How it works", href: "/#how-it-works", tKey: "footer.howItWorks" },
+      { label: "Live Results", href: "/results", tKey: "footer.liveResults" },
     ],
   },
   {
     title: "Account",
+    titleKey: "footer.account",
     links: [
-      { label: "Register", href: "/register" },
-      { label: "Client Login", href: "/login" },
-      { label: "Deposit", href: "/portal/deposit" },
-      { label: "Withdraw", href: "/portal/withdraw" },
+      { label: "Register", href: "/register", tKey: "footer.register" },
+      { label: "Client Login", href: "/login", tKey: "footer.clientLogin" },
+      { label: "Deposit", href: "/portal/deposit", tKey: "footer.deposit" },
+      { label: "Withdraw", href: "/portal/withdraw", tKey: "footer.withdraw" },
     ],
   },
   {
     title: "Company",
+    titleKey: "footer.company",
     links: [
-      { label: "About Us", href: "/about" },
-      { label: "Our Mission", href: "/mission" },
-      { label: "Our Vision", href: "/vision" },
-      { label: "Contact Us", href: "/contact" },
+      { label: "About Us", href: "/about", tKey: "footer.aboutUs" },
+      { label: "Our Mission", href: "/mission", tKey: "footer.ourMission" },
+      { label: "Our Vision", href: "/vision", tKey: "footer.ourVision" },
+      { label: "Contact Us", href: "/contact", tKey: "footer.contactUs" },
     ],
   },
   {
     title: "Legal",
+    titleKey: "footer.legal",
     links: [
-      { label: "Risk Disclosure", href: "/legal/risk-disclosure" },
-      { label: "Terms of Service", href: "/legal/terms" },
-      { label: "Privacy Policy", href: "/legal/privacy" },
-      { label: "AML Policy", href: "/legal/aml" },
+      { label: "Risk Disclosure", href: "/legal/risk-disclosure", tKey: "footer.riskDisclosure" },
+      { label: "Terms of Service", href: "/legal/terms", tKey: "footer.termsOfService" },
+      { label: "Privacy Policy", href: "/legal/privacy", tKey: "footer.privacyPolicy" },
+      { label: "AML Policy", href: "/legal/aml", tKey: "footer.amlPolicy" },
     ],
   },
 ];
@@ -121,18 +125,22 @@ export const capitalReturnNote =
 /** The 4-step client journey. */
 export const howItWorks = [
   {
+    tKey: "howStep1",
     title: "Register",
     text: `Create your account with a one-time $${REGISTRATION_FEE} registration fee and complete a quick verification.`,
   },
   {
+    tKey: "howStep2",
     title: "Deposit funds",
     text: "Top up your wallet by crypto (USDT/USDC), bank transfer or arrange a manual deposit. Admin confirms it.",
   },
   {
+    tKey: "howStep3",
     title: "Rent a robot",
     text: "Pick a robot and an 18 or 24-month contract. Your capital is allocated and the robot starts trading.",
   },
   {
+    tKey: "howStep4",
     title: "Earn & withdraw",
     text: "Receive your monthly return in your wallet and withdraw anytime via crypto, bank or cash.",
   },

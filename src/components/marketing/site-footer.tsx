@@ -3,8 +3,10 @@ import { Mail, MapPin, Phone } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
 import { Container } from "@/components/ui/container";
 import { footerNav, site } from "@/lib/site";
+import { getTranslations } from "@/lib/i18n";
 
-export function SiteFooter() {
+export async function SiteFooter() {
+  const { t } = await getTranslations();
   return (
     <footer className="border-t border-border bg-surface/40">
       <Container className="py-14">
@@ -30,7 +32,7 @@ export function SiteFooter() {
           {footerNav.map((col) => (
             <div key={col.title}>
               <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-2">
-                {col.title}
+                {t(col.titleKey)}
               </h3>
               <ul className="mt-4 space-y-2.5">
                 {col.links.map((link) => (
@@ -39,7 +41,7 @@ export function SiteFooter() {
                       href={link.href}
                       className="text-sm text-muted transition-colors hover:text-foreground"
                     >
-                      {link.label}
+                      {link.tKey ? t(link.tKey) : link.label}
                     </Link>
                   </li>
                 ))}
@@ -62,17 +64,17 @@ export function SiteFooter() {
 
         <div className="mt-8 flex flex-col items-center justify-between gap-3 border-t border-border pt-6 text-xs text-muted-2 sm:flex-row">
           <p>
-            © {new Date().getFullYear()} {site.name}. All rights reserved.
+            © {new Date().getFullYear()} {site.name}. {t("footer.rightsReserved")}
           </p>
           <div className="flex items-center gap-4">
             <Link href="/legal/terms" className="hover:text-foreground">
-              Terms
+              {t("footer.terms")}
             </Link>
             <Link href="/legal/privacy" className="hover:text-foreground">
-              Privacy
+              {t("footer.privacy")}
             </Link>
             <Link href="/legal/refund" className="hover:text-foreground">
-              Refunds
+              {t("footer.refunds")}
             </Link>
           </div>
         </div>

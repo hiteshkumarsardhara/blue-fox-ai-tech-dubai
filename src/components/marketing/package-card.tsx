@@ -11,18 +11,20 @@ import {
 } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { CountUp } from "@/components/ui/count-up";
+import { useTranslations } from "@/components/i18n/i18n-provider";
 import { cn } from "@/lib/utils";
 import { monthlyEarnings, type BotPackage } from "@/lib/site";
 
 const FOREX_PAIRS = ["EURUSD", "XAUUSD", "GBPUSD", "USDJPY"];
 const FEATURES = [
-  { icon: BarChart3, label: "Live trading" },
-  { icon: TrendingUp, label: "Monthly ROI" },
-  { icon: DollarSign, label: "Easy withdraw" },
-  { icon: ShieldCheck, label: "Secured" },
+  { id: "liveTrading", icon: BarChart3, tKey: "home.cardFeatLiveTrading" },
+  { id: "monthlyRoi", icon: TrendingUp, tKey: "home.cardFeatMonthlyRoi" },
+  { id: "easyWithdraw", icon: DollarSign, tKey: "home.cardFeatEasyWithdraw" },
+  { id: "secured", icon: ShieldCheck, tKey: "home.cardFeatSecured" },
 ];
 
 export function PackageCard({ pkg }: { pkg: BotPackage }) {
+  const { t } = useTranslations();
   const gold = pkg.tier === "Golden";
   const reduce = useReducedMotion();
   const shortName = pkg.name.replace(/^Bf\s+/, "").replace(/\s+Bot$/, "");
@@ -53,7 +55,7 @@ export function PackageCard({ pkg }: { pkg: BotPackage }) {
             gold ? "bg-accent text-accent-foreground" : "bg-primary text-primary-foreground",
           )}
         >
-          ★ Popular
+          ★ {t("home.cardPopular")}
         </span>
       )}
 
@@ -82,7 +84,7 @@ export function PackageCard({ pkg }: { pkg: BotPackage }) {
               {pkg.monthlyRoi}
               <span className="text-base">%</span>
             </p>
-            <p className="text-[8px] font-semibold uppercase opacity-85">per month</p>
+            <p className="text-[8px] font-semibold uppercase opacity-85">{t("home.cardPerMonth")}</p>
             <p className="mt-2.5 text-[13px] font-extrabold uppercase leading-tight">{shortName}</p>
             <div className="mt-1.5 space-y-0.5 text-[7.5px] font-medium uppercase leading-tight opacity-80">
               {FOREX_PAIRS.map((p) => (
@@ -101,7 +103,7 @@ export function PackageCard({ pkg }: { pkg: BotPackage }) {
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0">
               <h3 className="truncate text-base font-bold text-foreground">{pkg.name}</h3>
-              <p className="text-xs text-muted">AI forex robot · {pkg.contractMonths}-mo contract</p>
+              <p className="text-xs text-muted">{t("home.cardAiForexRobot")} · {pkg.contractMonths}{t("home.cardMoContract")}</p>
             </div>
             <div className="flex shrink-0 flex-wrap items-center justify-end gap-1">
               <span className="inline-flex items-center gap-0.5 rounded bg-[#0f1115] px-1.5 py-0.5 text-[9px] font-bold text-white">
@@ -118,20 +120,20 @@ export function PackageCard({ pkg }: { pkg: BotPackage }) {
 
           {/* Stat tiles — fill the space */}
           <div className="mt-3 grid grid-cols-4 gap-2">
-            <StatTile label="Total ROI">
+            <StatTile label={t("home.cardTotalRoi")}>
               <span className="text-success">
                 <CountUp value={totalRoi} suffix="%" />
               </span>
             </StatTile>
-            <StatTile label="Monthly">
+            <StatTile label={t("home.cardMonthly")}>
               <span className={accentText}>
                 <CountUp value={pkg.monthlyRoi} decimals={roiDecimals} suffix="%" />
               </span>
             </StatTile>
-            <StatTile label="Income/mo">
+            <StatTile label={t("home.cardIncomeMo")}>
               <CountUp value={monthlyEarnings(pkg)} prefix="$" />
             </StatTile>
-            <StatTile label="Term">
+            <StatTile label={t("home.cardTerm")}>
               <CountUp value={pkg.contractMonths} suffix="mo" />
             </StatTile>
           </div>
@@ -147,7 +149,7 @@ export function PackageCard({ pkg }: { pkg: BotPackage }) {
       <div className="relative mt-4 flex items-center justify-between gap-3 border-t border-border pt-3">
         <div className="flex items-center gap-3">
           <div>
-            <p className="text-[10px] uppercase tracking-wide text-muted-2">Deposit</p>
+            <p className="text-[10px] uppercase tracking-wide text-muted-2">{t("home.cardDeposit")}</p>
             <p className="text-xl font-extrabold text-primary">
               <CountUp value={pkg.deposit} prefix="$" />
             </p>
@@ -156,8 +158,8 @@ export function PackageCard({ pkg }: { pkg: BotPackage }) {
           <div className="hidden gap-1.5 sm:flex">
             {FEATURES.map((f) => (
               <span
-                key={f.label}
-                title={f.label}
+                key={f.id}
+                title={t(f.tKey)}
                 className="grid h-8 w-8 place-items-center rounded-full border border-border-strong bg-surface-2 text-muted transition-colors group-hover:text-foreground"
               >
                 <f.icon className="h-3.5 w-3.5" />
@@ -174,7 +176,7 @@ export function PackageCard({ pkg }: { pkg: BotPackage }) {
               : "bg-primary-soft text-primary group-hover:bg-primary group-hover:text-primary-foreground",
           )}
         >
-          Invest now
+          {t("home.cardInvestNow")}
           <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
         </span>
       </div>
