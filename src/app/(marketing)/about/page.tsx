@@ -18,6 +18,7 @@ import { Reveal } from "@/components/ui/reveal";
 import { buttonVariants } from "@/components/ui/button";
 import { SectionHeading } from "@/components/marketing/page-parts";
 import { site } from "@/lib/site";
+import { getTranslations } from "@/lib/i18n";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -25,20 +26,22 @@ export const metadata: Metadata = {
     "Blue Fox AI Tech Solutions provides investors access to autonomous AI trading robots that analyze the markets and trade 24/7 — accessible, transparent and fully automated.",
 };
 
-const QUICK_LINKS = [
-  { label: "Our Mission", href: "/mission" },
-  { label: "Our Vision", href: "/vision" },
-  { label: "Our Services", href: "/services" },
-];
+export default async function AboutPage() {
+  const { t } = await getTranslations();
 
-const WHAT_WE_DO = [
-  { icon: Cpu, title: "AI-Powered Algorithms", text: "Sophisticated, continuously-refined algorithms analyze the markets and execute with speed and precision." },
-  { icon: Clock, title: "24/7 Autonomous", text: "The robots monitor conditions and trade around the clock — no manual intervention required." },
-  { icon: Users, title: "Accessible to Everyone", text: "Advanced trading technology for investors of all levels — not just experts or institutions." },
-  { icon: ShieldCheck, title: "Transparent & Automated", text: "You allocate funds; the robots operate autonomously. We don't manage discretionary money." },
-];
+  const QUICK_LINKS = [
+    { label: t("marketing.about.quickLinkMission"), href: "/mission" },
+    { label: t("marketing.about.quickLinkVision"), href: "/vision" },
+    { label: t("marketing.about.quickLinkServices"), href: "/services" },
+  ];
 
-export default function AboutPage() {
+  const WHAT_WE_DO = [
+    { icon: Cpu, title: t("marketing.about.whatWeDo1Title"), text: t("marketing.about.whatWeDo1Text") },
+    { icon: Clock, title: t("marketing.about.whatWeDo2Title"), text: t("marketing.about.whatWeDo2Text") },
+    { icon: Users, title: t("marketing.about.whatWeDo3Title"), text: t("marketing.about.whatWeDo3Text") },
+    { icon: ShieldCheck, title: t("marketing.about.whatWeDo4Title"), text: t("marketing.about.whatWeDo4Text") },
+  ];
+
   return (
     <>
       {/* Hero */}
@@ -48,14 +51,13 @@ export default function AboutPage() {
         <Container className="relative py-16 sm:py-24">
           <Reveal className="mx-auto max-w-3xl text-center">
             <Badge tone="primary" className="mx-auto">
-              <Sparkles className="h-3.5 w-3.5" /> About Blue Fox AI Tech Solutions
+              <Sparkles className="h-3.5 w-3.5" /> {t("marketing.about.heroBadge")}
             </Badge>
             <h1 className="mt-6 text-balance text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
-              The future of trading is <span className="text-gradient">autonomous</span>
+              {t("marketing.about.heroTitlePart1")} <span className="text-gradient">{t("marketing.about.heroTitleHighlight")}</span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-muted">
-              Welcome to Blue Fox AI Tech Solutions, where we are transforming the
-              future of trading through advanced AI-powered trading robots.
+              {t("marketing.about.heroSubtitle")}
             </p>
           </Reveal>
 
@@ -76,9 +78,9 @@ export default function AboutPage() {
           <Reveal delay={0.15}>
             <div className="mx-auto mt-12 grid max-w-3xl grid-cols-3 gap-px overflow-hidden rounded-2xl border border-border bg-border">
               {[
-                { v: "24/7", l: "Always-on trading" },
-                { v: "100%", l: "Automated" },
-                { v: "AI", l: "Data-driven" },
+                { v: "24/7", l: t("marketing.about.stat1Label") },
+                { v: "100%", l: t("marketing.about.stat2Label") },
+                { v: "AI", l: t("marketing.about.stat3Label") },
               ].map((s) => (
                 <div key={s.l} className="bg-surface px-4 py-6 text-center">
                   <p className="text-2xl font-semibold text-foreground sm:text-3xl">{s.v}</p>
@@ -95,23 +97,18 @@ export default function AboutPage() {
         <Container>
           <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
             <Reveal>
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Who we are</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">{t("marketing.about.whoWeAreEyebrow")}</p>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
-                Not a traditional trading platform
+                {t("marketing.about.whoWeAreTitle")}
               </h2>
               <div className="mt-5 space-y-4 text-muted">
                 <p>
-                  We are not a traditional trading platform. Instead, we provide
-                  investors with access to{" "}
-                  <span className="text-foreground">autonomous AI trading robots</span>{" "}
-                  that operate 24/7 on their behalf.
+                  {t("marketing.about.whoWeAreP1Part1")}{" "}
+                  <span className="text-foreground">{t("marketing.about.whoWeAreP1Highlight")}</span>{" "}
+                  {t("marketing.about.whoWeAreP1Part2")}
                 </p>
                 <p>
-                  These intelligent systems are designed with sophisticated
-                  algorithms capable of analyzing market conditions, executing
-                  trades, and making data-driven decisions aimed at maximizing
-                  investment growth — all without requiring constant user
-                  involvement.
+                  {t("marketing.about.whoWeAreP2")}
                 </p>
               </div>
             </Reveal>
@@ -143,13 +140,12 @@ export default function AboutPage() {
                 <div className="grid h-12 w-12 place-items-center rounded-xl bg-primary-soft ring-1 ring-primary/30">
                   <Target className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="mt-5 text-xl font-semibold text-foreground">Our Mission</h3>
+                <h3 className="mt-5 text-xl font-semibold text-foreground">{t("marketing.about.missionCardTitle")}</h3>
                 <p className="mt-2 leading-relaxed text-muted">
-                  To make advanced AI-driven trading technology accessible to
-                  investors through a simple, user-friendly platform.
+                  {t("marketing.about.missionCardText")}
                 </p>
                 <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary">
-                  Read our mission{" "}
+                  {t("marketing.about.missionCardLink")}{" "}
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </span>
               </Link>
@@ -162,13 +158,12 @@ export default function AboutPage() {
                 <div className="grid h-12 w-12 place-items-center rounded-xl bg-accent/15 ring-1 ring-accent/30">
                   <Eye className="h-6 w-6 text-accent" />
                 </div>
-                <h3 className="mt-5 text-xl font-semibold text-foreground">Our Vision</h3>
+                <h3 className="mt-5 text-xl font-semibold text-foreground">{t("marketing.about.visionCardTitle")}</h3>
                 <p className="mt-2 leading-relaxed text-muted">
-                  To democratize access to advanced automated trading for investors
-                  of all experience levels, worldwide.
+                  {t("marketing.about.visionCardText")}
                 </p>
                 <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-accent">
-                  Read our vision{" "}
+                  {t("marketing.about.visionCardLink")}{" "}
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </span>
               </Link>
@@ -182,16 +177,16 @@ export default function AboutPage() {
         <Container>
           <Reveal>
             <SectionHeading
-              eyebrow="What we stand for"
-              title="Innovation, transparency & automation"
+              eyebrow={t("marketing.about.valuesEyebrow")}
+              title={t("marketing.about.valuesTitle")}
             />
           </Reveal>
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              { icon: Rocket, title: "Innovation", text: "Cutting-edge AI and automated trading technology, always improving." },
-              { icon: ShieldCheck, title: "Transparency", text: "Clear terms — you stay in control of your funds and decisions." },
-              { icon: Globe2, title: "Accessibility", text: "Designed for investors worldwide, whatever their experience level." },
-              { icon: Clock, title: "Always On", text: "Intelligent systems working for you 24 hours a day, 7 days a week." },
+              { icon: Rocket, title: t("marketing.about.value1Title"), text: t("marketing.about.value1Text") },
+              { icon: ShieldCheck, title: t("marketing.about.value2Title"), text: t("marketing.about.value2Text") },
+              { icon: Globe2, title: t("marketing.about.value3Title"), text: t("marketing.about.value3Text") },
+              { icon: Clock, title: t("marketing.about.value4Title"), text: t("marketing.about.value4Text") },
             ].map((v, i) => (
               <Reveal key={v.title} delay={(i % 4) * 0.08}>
                 <div className="h-full rounded-2xl border border-border bg-surface p-6">
@@ -213,18 +208,17 @@ export default function AboutPage() {
               <div className="pointer-events-none absolute -bottom-24 left-1/2 h-72 w-[640px] -translate-x-1/2 rounded-full bg-primary/20 blur-[120px]" />
               <div className="relative mx-auto max-w-2xl">
                 <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-                  Let AI trade for you
+                  {t("marketing.about.ctaTitle")}
                 </h2>
                 <p className="mt-4 text-muted">
-                  Join Blue Fox and put cutting-edge AI trading robots to work on
-                  your capital — 24/7. {site.location}.
+                  {t("marketing.about.ctaText")} {site.location}.
                 </p>
                 <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
                   <Link href="/register" className={buttonVariants({ variant: "primary", size: "lg" })}>
-                    Start investing <ArrowRight className="h-4 w-4" />
+                    {t("marketing.about.ctaPrimary")} <ArrowRight className="h-4 w-4" />
                   </Link>
                   <Link href="/#packages" className={buttonVariants({ variant: "outline", size: "lg" })}>
-                    View packages
+                    {t("marketing.about.ctaSecondary")}
                   </Link>
                 </div>
               </div>

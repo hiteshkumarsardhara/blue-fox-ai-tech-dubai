@@ -12,20 +12,22 @@ import { Badge } from "@/components/ui/badge";
 import { Reveal } from "@/components/ui/reveal";
 import { ContactForm } from "@/components/marketing/contact-form";
 import { site } from "@/lib/site";
+import { getTranslations } from "@/lib/i18n";
 
 export const metadata: Metadata = {
   title: "Contact Us",
   description: `Get in touch with ${site.name}. Email, phone, WhatsApp, or send us a message — our team replies within 24 hours.`,
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const { t } = await getTranslations();
   const whatsappHref = `https://wa.me/${site.whatsapp.replace(/[^\d]/g, "")}`;
 
   const channels = [
-    { icon: Mail, label: "Email", value: site.email, href: `mailto:${site.email}` },
-    { icon: Phone, label: "Phone", value: site.phone, href: `tel:${site.phone.replace(/\s/g, "")}` },
-    { icon: MessageCircle, label: "WhatsApp", value: site.phone, href: whatsappHref },
-    { icon: MapPin, label: "Office", value: site.location, href: undefined },
+    { icon: Mail, id: "Email", label: t("marketing.contact.channelEmail"), value: site.email, href: `mailto:${site.email}` },
+    { icon: Phone, id: "Phone", label: t("marketing.contact.channelPhone"), value: site.phone, href: `tel:${site.phone.replace(/\s/g, "")}` },
+    { icon: MessageCircle, id: "WhatsApp", label: t("marketing.contact.channelWhatsApp"), value: site.phone, href: whatsappHref },
+    { icon: MapPin, id: "Office", label: t("marketing.contact.channelOffice"), value: site.location, href: undefined },
   ];
 
   return (
@@ -36,14 +38,15 @@ export default function ContactPage() {
         <Container className="relative py-16 sm:py-20">
           <Reveal className="mx-auto max-w-2xl text-center">
             <Badge tone="primary" className="mx-auto">
-              <Sparkles className="h-3.5 w-3.5" /> We&apos;re here to help
+              <Sparkles className="h-3.5 w-3.5" /> {t("marketing.contact.heroEyebrow")}
             </Badge>
             <h1 className="mt-6 text-balance text-4xl font-semibold tracking-tight sm:text-5xl">
-              Get in <span className="text-gradient">touch</span>
+              {t("marketing.contact.heroTitlePrefix")}{" "}
+              <span className="text-gradient">{t("marketing.contact.heroTitleHighlight")}</span>
             </h1>
             <p className="mx-auto mt-5 max-w-xl text-pretty text-lg leading-relaxed text-muted">
-              Questions about our AI trading robots, packages, deposits or
-              withdrawals? Our team in {site.location} is ready to help.
+              {t("marketing.contact.heroSubtitleBefore")} {site.location}{" "}
+              {t("marketing.contact.heroSubtitleAfter")}
             </p>
           </Reveal>
         </Container>
@@ -74,9 +77,9 @@ export default function ContactPage() {
                   );
                   return c.href ? (
                     <a
-                      key={c.label}
+                      key={c.id}
                       href={c.href}
-                      target={c.label === "WhatsApp" ? "_blank" : undefined}
+                      target={c.id === "WhatsApp" ? "_blank" : undefined}
                       rel="noopener noreferrer"
                       className="flex items-center gap-3.5 rounded-xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
                     >
@@ -84,7 +87,7 @@ export default function ContactPage() {
                     </a>
                   ) : (
                     <div
-                      key={c.label}
+                      key={c.id}
                       className="flex items-center gap-3.5 rounded-xl border border-border bg-surface p-4"
                     >
                       {inner}
@@ -98,10 +101,10 @@ export default function ContactPage() {
                   </span>
                   <span>
                     <span className="block text-xs font-medium uppercase tracking-wide text-muted-2">
-                      Support hours
+                      {t("marketing.contact.supportHoursLabel")}
                     </span>
                     <span className="block text-sm font-medium text-foreground">
-                      24/7 — we trade around the clock
+                      {t("marketing.contact.supportHoursValue")}
                     </span>
                   </span>
                 </div>
@@ -112,7 +115,7 @@ export default function ContactPage() {
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 rounded-xl border border-success/30 bg-success-soft px-4 py-3 text-sm font-semibold text-success transition-colors hover:bg-success/20"
                 >
-                  <MessageCircle className="h-4 w-4" /> Chat on WhatsApp
+                  <MessageCircle className="h-4 w-4" /> {t("marketing.contact.chatOnWhatsApp")}
                 </a>
               </div>
             </Reveal>
