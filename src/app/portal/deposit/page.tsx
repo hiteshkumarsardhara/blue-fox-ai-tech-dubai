@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Info } from "lucide-react";
 import { Container } from "@/components/ui/container";
+import { LocalTime } from "@/components/ui/local-time";
 import { DepositForm } from "@/components/portal/deposit-form";
 import { StatusBadge } from "@/components/portal/status-badge";
 import { getCurrentUser } from "@/lib/auth";
@@ -68,7 +69,7 @@ export default async function DepositPage() {
                     <div>
                       <p className="text-sm font-semibold text-foreground">{formatCents(d.amountCents)}</p>
                       <p className="text-xs text-muted-2">
-                        {d.method.toUpperCase()} · {d.createdAt.toLocaleDateString()}
+                        {d.method.toUpperCase()} · <LocalTime iso={d.createdAt.toISOString()} mode="date" />
                       </p>
                     </div>
                     <StatusBadge status={d.status} />

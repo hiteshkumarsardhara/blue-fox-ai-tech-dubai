@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/ui/container";
+import { LocalTime } from "@/components/ui/local-time";
 import { db } from "@/lib/db";
 import { formatCents } from "@/lib/utils";
 
@@ -61,7 +62,7 @@ export default async function AdminUsers() {
                 </td>
                 <td className="px-5 py-3 text-right text-muted">{u._count.contracts}</td>
                 <td className="px-5 py-3 text-right text-xs text-muted-2">
-                  {u.createdAt.toLocaleDateString()}
+                  <LocalTime iso={u.createdAt.toISOString()} mode="date" />
                 </td>
               </tr>
             ))}

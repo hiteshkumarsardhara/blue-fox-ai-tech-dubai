@@ -116,10 +116,10 @@ export function RegisterForm({ initialRef = "" }: { initialRef?: string }) {
                 <input required type="email" placeholder="you@email.com" value={form.email} onChange={update("email")} className={inputClass} />
               </Field>
               <Field label="Phone / WhatsApp" required>
-                <input required type="tel" placeholder="+971 ..." value={form.phone} onChange={update("phone")} className={inputClass} />
+                <input required type="tel" placeholder="+1 555 123 4567 (with country code)" value={form.phone} onChange={update("phone")} className={inputClass} />
               </Field>
               <Field label="Country" required>
-                <input required type="text" placeholder="United Arab Emirates" value={form.country} onChange={update("country")} className={inputClass} />
+                <input required type="text" placeholder="Your country" value={form.country} onChange={update("country")} className={inputClass} />
               </Field>
               <Field label="Password" required>
                 <PasswordInput required placeholder="Min. 6 characters" value={form.password} onChange={update("password")} />

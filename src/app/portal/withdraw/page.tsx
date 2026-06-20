@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ShieldAlert, Clock } from "lucide-react";
 import { Container } from "@/components/ui/container";
+import { LocalTime } from "@/components/ui/local-time";
 import { WithdrawForm } from "@/components/portal/withdraw-form";
 import { StatusBadge } from "@/components/portal/status-badge";
 import { buttonVariants } from "@/components/ui/button";
@@ -77,7 +78,7 @@ export default async function WithdrawPage() {
                       {formatCents(w.amountCents)}
                     </p>
                     <p className="text-xs text-muted-2">
-                      {METHOD_LABEL[w.method] ?? w.method} · {w.requestedAt.toLocaleDateString()}
+                      {METHOD_LABEL[w.method] ?? w.method} · <LocalTime iso={w.requestedAt.toISOString()} mode="date" />
                     </p>
                   </div>
                   <StatusBadge status={w.status} />

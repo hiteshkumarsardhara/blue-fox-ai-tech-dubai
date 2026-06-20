@@ -55,7 +55,7 @@ export function ProfileForm({ phone, country }: { phone: string; country: string
           <input
             value={form.phone}
             onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
-            placeholder="+971 ..."
+            placeholder="+1 555 123 4567 (with country code)"
             className={inputClass}
           />
         </label>

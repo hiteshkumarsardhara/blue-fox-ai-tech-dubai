@@ -8,6 +8,7 @@ import {
   Receipt,
 } from "lucide-react";
 import { Container } from "@/components/ui/container";
+import { LocalTime } from "@/components/ui/local-time";
 import { getCurrentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { formatCents, cn } from "@/lib/utils";
@@ -88,7 +89,7 @@ export default async function TransactionsPage() {
                     </p>
                     <p className="truncate text-xs text-muted-2">
                       {e.note ? e.note + " · " : ""}
-                      {e.createdAt.toLocaleString()}
+                      <LocalTime iso={e.createdAt.toISOString()} />
                     </p>
                   </div>
                   <div className="text-right">

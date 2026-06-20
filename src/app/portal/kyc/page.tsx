@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ShieldCheck, ShieldAlert, Clock, ShieldX, FileText } from "lucide-react";
 import { Container } from "@/components/ui/container";
+import { LocalTime } from "@/components/ui/local-time";
 import { KycForm } from "@/components/portal/kyc-form";
 import { StatusBadge } from "@/components/portal/status-badge";
 import { buttonVariants } from "@/components/ui/button";
@@ -125,7 +126,7 @@ export default async function KycPage() {
                         <p className="text-sm font-medium text-foreground">
                           {DOC_LABELS[r.docType] ?? r.docType}
                         </p>
-                        <p className="text-xs text-muted-2">{r.createdAt.toLocaleString()}</p>
+                        <p className="text-xs text-muted-2"><LocalTime iso={r.createdAt.toISOString()} /></p>
                       </div>
                       <StatusBadge status={r.status} />
                     </div>

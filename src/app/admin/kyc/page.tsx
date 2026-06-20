@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { FileText } from "lucide-react";
 import { Container } from "@/components/ui/container";
+import { LocalTime } from "@/components/ui/local-time";
 import { StatusBadge } from "@/components/portal/status-badge";
 import { KycActions } from "@/components/admin/row-actions";
 import { db } from "@/lib/db";
@@ -113,7 +114,7 @@ function Section({ title, rows, actionable }: { title: string; rows: Row[]; acti
                   <p className="text-xs text-muted-2">{r.user.email}</p>
                   <p className="mt-1 text-sm text-muted">
                     {DOC_LABELS[r.docType] ?? r.docType}
-                    {r.docNumber ? ` · ${r.docNumber}` : ""} · {r.createdAt.toLocaleDateString()}
+                    {r.docNumber ? ` · ${r.docNumber}` : ""} · <LocalTime iso={r.createdAt.toISOString()} mode="date" />
                   </p>
                 </div>
                 {actionable ? <KycActions id={r.id} /> : <StatusBadge status={r.status} />}

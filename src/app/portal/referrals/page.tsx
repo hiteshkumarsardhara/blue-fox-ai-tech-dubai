@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Users, Gift, TrendingUp } from "lucide-react";
 import { Container } from "@/components/ui/container";
+import { LocalTime } from "@/components/ui/local-time";
 import { ReferralLink } from "@/components/portal/referral-link";
 import { getCurrentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
@@ -84,7 +85,7 @@ export default async function ReferralsPage() {
               <li key={r.id} className="flex items-center justify-between gap-3 px-5 py-3.5">
                 <div>
                   <p className="text-sm font-medium text-foreground">{r.name}</p>
-                  <p className="text-xs text-muted-2">Joined {r.createdAt.toLocaleDateString()}</p>
+                  <p className="text-xs text-muted-2">Joined <LocalTime iso={r.createdAt.toISOString()} mode="date" /></p>
                 </div>
                 <span
                   className={

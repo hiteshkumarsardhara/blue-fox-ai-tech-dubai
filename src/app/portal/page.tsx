@@ -14,6 +14,7 @@ import {
 import { Container } from "@/components/ui/container";
 import { Badge } from "@/components/ui/badge";
 import { StatusBadge } from "@/components/portal/status-badge";
+import { LocalTime } from "@/components/ui/local-time";
 import { getCurrentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { formatCents } from "@/lib/utils";
@@ -215,7 +216,7 @@ export default async function PortalDashboard() {
                     <p className="truncate text-sm font-medium capitalize text-foreground">
                       {e.note ?? e.type.replace(/_/g, " ")}
                     </p>
-                    <p className="text-xs text-muted-2">{e.createdAt.toLocaleString()}</p>
+                    <p className="text-xs text-muted-2"><LocalTime iso={e.createdAt.toISOString()} /></p>
                   </div>
                   <span className={`text-sm font-semibold tabular-nums ${credit ? "text-success" : "text-foreground"}`}>
                     {credit ? "+" : "−"}
