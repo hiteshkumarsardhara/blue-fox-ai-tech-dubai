@@ -24,7 +24,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       </main>
 
       <footer className="px-5 py-6 text-center text-xs text-muted-2">
-        © {new Date().getFullYear()} Blue Fox Dubai ·{" "}
+        © {new Date().getFullYear()} Blue Fox AI Tech Solutions ·{" "}
         <Link href="/legal/terms" className="hover:text-foreground">Terms</Link> ·{" "}
         <Link href="/legal/privacy" className="hover:text-foreground">Privacy</Link>
       </footer>

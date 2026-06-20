@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     "MT4 EA",
     "MT5 EA",
     "automated trading",
-    "forex EA Dubai",
+    "automated forex investing",
     "trading bot",
   ],
   openGraph: {

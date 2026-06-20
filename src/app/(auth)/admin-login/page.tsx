@@ -4,7 +4,7 @@ import { LoginForm } from "@/components/auth/login-form";
 
 export const metadata: Metadata = {
   title: "Staff login",
-  description: "Sign in to the Blue Fox Dubai admin panel.",
+  description: "Sign in to the Blue Fox AI Tech Solutions admin panel.",
 };
 
 export default function AdminLoginPage() {

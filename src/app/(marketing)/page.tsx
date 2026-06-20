@@ -55,7 +55,7 @@ export default function HomePage() {
             {/* Left: copy + CTA + reviews + plans */}
             <Reveal>
               <Badge tone="primary">
-                <Sparkles className="h-3.5 w-3.5" /> AI-Powered Forex Robots · Dubai
+                <Sparkles className="h-3.5 w-3.5" /> AI-Powered Forex Robots · Worldwide
               </Badge>
               <h1 className="mt-5 text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
                 Don&apos;t Delay,{" "}

@@ -8,7 +8,7 @@
  */
 type Mail = { to: string; subject: string; text: string };
 
-const FROM = process.env.MAIL_FROM || "Blue Fox Dubai <onboarding@resend.dev>";
+const FROM = process.env.MAIL_FROM || "Blue Fox AI Tech Solutions <onboarding@resend.dev>";
 const money = (cents: number) => "$" + (cents / 100).toFixed(2);
 
 export async function sendMail({ to, subject, text }: Mail): Promise<void> {
@@ -43,7 +43,7 @@ export async function notifyDepositConfirmed(to: string, name: string, amountCen
   await sendMail({
     to,
     subject: "Your deposit is confirmed",
-    text: `Hi ${name},\n\nYour deposit of ${money(amountCents)} has been confirmed and credited to your Blue Fox wallet. You can now rent a robot and start earning.\n\n— Blue Fox Dubai`,
+    text: `Hi ${name},\n\nYour deposit of ${money(amountCents)} has been confirmed and credited to your Blue Fox wallet. You can now rent a robot and start earning.\n\n— Blue Fox AI Tech Solutions`,
   });
 }
 
@@ -51,7 +51,7 @@ export async function notifyEarningCredited(to: string, name: string, amountCent
   await sendMail({
     to,
     subject: "Monthly return credited",
-    text: `Hi ${name},\n\nA monthly return of ${money(amountCents)} from your ${robot} has been credited to your wallet.\n\n— Blue Fox Dubai`,
+    text: `Hi ${name},\n\nA monthly return of ${money(amountCents)} from your ${robot} has been credited to your wallet.\n\n— Blue Fox AI Tech Solutions`,
   });
 }
 
@@ -59,7 +59,7 @@ export async function notifyWithdrawalPaid(to: string, name: string, amountCents
   await sendMail({
     to,
     subject: "Your withdrawal has been paid",
-    text: `Hi ${name},\n\nYour withdrawal of ${money(amountCents)} has been processed. Thank you for choosing Blue Fox.\n\n— Blue Fox Dubai`,
+    text: `Hi ${name},\n\nYour withdrawal of ${money(amountCents)} has been processed. Thank you for choosing Blue Fox.\n\n— Blue Fox AI Tech Solutions`,
   });
 }
 
@@ -68,7 +68,7 @@ export async function notifyKycDecision(to: string, name: string, approved: bool
     to,
     subject: approved ? "Identity verified" : "Identity verification update",
     text: approved
-      ? `Hi ${name},\n\nYour identity has been verified. Withdrawals are now enabled on your account.\n\n— Blue Fox Dubai`
-      : `Hi ${name},\n\nWe couldn't approve your verification. Reason: ${reason ?? "—"}\n\nPlease re-submit clear documents from your account.\n\n— Blue Fox Dubai`,
+      ? `Hi ${name},\n\nYour identity has been verified. Withdrawals are now enabled on your account.\n\n— Blue Fox AI Tech Solutions`
+      : `Hi ${name},\n\nWe couldn't approve your verification. Reason: ${reason ?? "—"}\n\nPlease re-submit clear documents from your account.\n\n— Blue Fox AI Tech Solutions`,
   });
 }

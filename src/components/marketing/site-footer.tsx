@@ -52,7 +52,7 @@ export function SiteFooter() {
         <div className="mt-12 rounded-xl border border-border bg-background/60 p-5">
           <p className="text-xs leading-relaxed text-muted-2">
             <span className="font-semibold text-muted">Risk Disclaimer:</span>{" "}
-            {site.riskWarning} Blue Fox Dubai provides trading software only — we
+            {site.riskWarning} {site.name} provides trading software only — we
             do not manage funds, place trades on your behalf, or provide
             investment advice. All Expert Advisors run on your own broker account
             and are used at your own risk. Performance figures shown are historical

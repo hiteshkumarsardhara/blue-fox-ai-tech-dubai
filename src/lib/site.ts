@@ -1,16 +1,16 @@
 /**
- * Central site configuration for Blue Fox Dubai.
+ * Central site configuration for Blue Fox AI Tech Solutions.
  * Model: clients deposit funds, rent a forex robot on an 18/24-month
  * contract, and earn a monthly return (fixed floor + variable upside)
  * which they withdraw from their wallet.
  */
 
 export const site = {
-  name: "Blue Fox Dubai",
+  name: "Blue Fox AI Tech Solutions",
   shortName: "Blue Fox",
   tagline: "Let AI Forex Robots Grow Your Capital",
   description:
-    "Blue Fox Dubai puts your capital to work with professional forex trading robots. Deposit, choose a robot, and earn a monthly return paid straight to your wallet — withdraw anytime in crypto, bank or cash.",
+    "Blue Fox AI Tech Solutions puts your capital to work with professional forex trading robots. Deposit, choose a robot, and earn a monthly return paid straight to your wallet — withdraw anytime in crypto, bank or cash.",
   url: "https://bluefoxdubai.com",
   email: "support@bluefoxdubai.com",
   phone: "+971 50 000 0000",
