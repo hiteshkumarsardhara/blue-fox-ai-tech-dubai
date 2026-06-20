@@ -1,9 +1,12 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
+import crypto from "node:crypto";
 import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
 import { createSession, destroySession } from "@/lib/auth";
+import { sendPasswordResetEmail } from "@/lib/mail";
 
 export type ActionResult =
   | { ok: true; role?: string }
@@ -95,4 +98,56 @@ export async function loginAction(input: {
 export async function logoutAction() {
   await destroySession();
   redirect("/login");
+}
+
+async function baseUrl() {
+  const h = await headers();
+  const host = h.get("x-forwarded-host") ?? h.get("host") ?? "localhost:3000";
+  const proto = h.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
+  return `${proto}://${host}`;
+}
+
+export async function requestPasswordResetAction(input: {
+  email: string;
+}): Promise<ActionResult> {
+  const email = input.email?.trim().toLowerCase();
+  if (!email || !EMAIL_RE.test(email))
+    return { ok: false, error: "Please enter a valid email address." };
+
+  const user = await db.user.findUnique({ where: { email } });
+  if (user && user.status === "active") {
+    const token = crypto.randomBytes(32).toString("hex");
+    const resetTokenHash = crypto.createHash("sha256").update(token).digest("hex");
+    await db.user.update({
+      where: { id: user.id },
+      data: { resetTokenHash, resetTokenExpiresAt: new Date(Date.now() + 60 * 60 * 1000) },
+    });
+    await sendPasswordResetEmail(email, `${await baseUrl()}/reset-password?token=${token}`);
+  }
+
+  // Always the same response so an attacker can't probe which emails exist.
+  return { ok: true };
+}
+
+export async function resetPasswordAction(input: {
+  token: string;
+  password: string;
+}): Promise<ActionResult> {
+  if (!input.password || input.password.length < 6)
+    return { ok: false, error: "Password must be at least 6 characters." };
+  const token = input.token?.trim();
+  if (!token) return { ok: false, error: "This reset link is invalid or has expired." };
+
+  const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
+  const user = await db.user.findFirst({
+    where: { resetTokenHash: tokenHash, resetTokenExpiresAt: { gt: new Date() } },
+  });
+  if (!user) return { ok: false, error: "This reset link is invalid or has expired." };
+
+  const passwordHash = await bcrypt.hash(input.password, 10);
+  await db.user.update({
+    where: { id: user.id },
+    data: { passwordHash, resetTokenHash: null, resetTokenExpiresAt: null },
+  });
+  return { ok: true };
 }

@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import bcrypt from "bcryptjs";
 import { getCurrentUser } from "@/lib/auth";
 import { requestDeposit, rentRobot, requestWithdrawal, submitKyc } from "@/lib/ledger";
 import { saveKycFiles, deleteKycFiles, type KycUpload } from "@/lib/kyc-storage";
@@ -136,5 +137,47 @@ export async function submitKycAction(formData: FormData): Promise<Result> {
     // The DB write failed — don't leave the just-uploaded files orphaned on disk.
     await deleteKycFiles(user.id, savedUrls);
     return { ok: false, error: e instanceof Error ? e.message : "Something went wrong." };
+  }
+}
+
+export async function updateProfileAction(input: {
+  phone: string;
+  country: string;
+}): Promise<Result> {
+  const user = await getCurrentUser();
+  if (!user) return { ok: false, error: "Please sign in." };
+  try {
+    await db.user.update({
+      where: { id: user.id },
+      data: {
+        phone: input.phone?.trim() || null,
+        country: input.country?.trim() || null,
+      },
+    });
+    revalidatePath("/portal/account");
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Could not update profile." };
+  }
+}
+
+export async function changePasswordAction(input: {
+  current: string;
+  next: string;
+}): Promise<Result> {
+  const user = await getCurrentUser();
+  if (!user) return { ok: false, error: "Please sign in." };
+  if (!input.next || input.next.length < 6)
+    return { ok: false, error: "New password must be at least 6 characters." };
+
+  const valid = await bcrypt.compare(input.current ?? "", user.passwordHash);
+  if (!valid) return { ok: false, error: "Current password is incorrect." };
+
+  try {
+    const passwordHash = await bcrypt.hash(input.next, 10);
+    await db.user.update({ where: { id: user.id }, data: { passwordHash } });
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Could not change password." };
   }
 }

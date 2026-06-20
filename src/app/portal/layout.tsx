@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { LogOut } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
 import { getCurrentUser } from "@/lib/auth";
@@ -20,9 +21,12 @@ export default async function PortalLayout({
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8">
           <Logo height={40} />
           <div className="flex items-center gap-3">
-            <span className="hidden text-sm text-muted sm:block">
+            <Link
+              href="/portal/account"
+              className="hidden text-sm text-muted transition-colors hover:text-foreground sm:block"
+            >
               Hi, <span className="font-medium text-foreground">{user.name.split(" ")[0]}</span>
-            </span>
+            </Link>
             <form action={logoutAction}>
               <button
                 type="submit"

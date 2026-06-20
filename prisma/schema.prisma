@@ -26,6 +26,8 @@ model User {
   referredBy      User?     @relation("Referrals", fields: [referredById], references: [id])
   referrals       User[]    @relation("Referrals")
   termsAcceptedAt DateTime?
+  resetTokenHash      String?
+  resetTokenExpiresAt DateTime?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 
