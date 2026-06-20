@@ -12,18 +12,20 @@ import {
   Gift,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "@/components/i18n/i18n-provider";
 
 const LINKS = [
-  { href: "/portal", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/portal/deposit", label: "Deposit", icon: ArrowDownToLine },
-  { href: "/portal/invest", label: "Invest", icon: Bot },
-  { href: "/portal/withdraw", label: "Withdraw", icon: ArrowUpFromLine },
-  { href: "/portal/kyc", label: "Verify", icon: ShieldCheck },
-  { href: "/portal/referrals", label: "Referrals", icon: Gift },
-  { href: "/portal/transactions", label: "Transactions", icon: Receipt },
+  { href: "/portal", label: "Dashboard", tKey: "portalNav.dashboard", icon: LayoutDashboard },
+  { href: "/portal/deposit", label: "Deposit", tKey: "portalNav.deposit", icon: ArrowDownToLine },
+  { href: "/portal/invest", label: "Invest", tKey: "portalNav.invest", icon: Bot },
+  { href: "/portal/withdraw", label: "Withdraw", tKey: "portalNav.withdraw", icon: ArrowUpFromLine },
+  { href: "/portal/kyc", label: "Verify", tKey: "portalNav.verify", icon: ShieldCheck },
+  { href: "/portal/referrals", label: "Referrals", tKey: "portalNav.referrals", icon: Gift },
+  { href: "/portal/transactions", label: "Transactions", tKey: "portalNav.transactions", icon: Receipt },
 ];
 
 export function PortalNav() {
+  const { t } = useTranslations();
   const pathname = usePathname();
   return (
     <nav className="flex gap-1 overflow-x-auto">
@@ -41,7 +43,7 @@ export function PortalNav() {
             )}
           >
             <l.icon className="h-4 w-4" />
-            {l.label}
+            {t(l.tKey)}
           </Link>
         );
       })}

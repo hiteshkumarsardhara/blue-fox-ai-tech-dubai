@@ -20,5 +20,37 @@
     "subtitle": "Let Blue Fox AI trading robots grow your capital. Deposit, rent a robot, and earn a monthly return paid to your wallet — withdraw anytime in crypto, bank transfer or cash.",
     "ctaPrimary": "Start Investing Now",
     "ctaSecondary": "View Packages"
+  },
+  "auth": {
+    "welcome": "Welcome back",
+    "loginSubtitle": "Log in to your client portal.",
+    "email": "Email",
+    "password": "Password",
+    "forgot": "Forgot password?",
+    "remember": "Remember me",
+    "logIn": "Log in",
+    "loggingIn": "Logging in...",
+    "noAccount": "Don't have an account?",
+    "createOne": "Create one",
+    "createAccount": "Create your account",
+    "oneTime": "One-time",
+    "regFeeNote": "registration fee. Takes about a minute.",
+    "fullName": "Full name",
+    "phone": "Phone / WhatsApp",
+    "country": "Country",
+    "confirmPassword": "Confirm password",
+    "referralOptional": "Referral code (optional)",
+    "referralApplied": "Referral applied",
+    "continue": "Continue",
+    "alreadyAccount": "Already have an account?"
+  },
+  "portalNav": {
+    "dashboard": "Dashboard",
+    "deposit": "Deposit",
+    "invest": "Invest",
+    "withdraw": "Withdraw",
+    "verify": "Verify",
+    "referrals": "Referrals",
+    "transactions": "Transactions"
   }
 }

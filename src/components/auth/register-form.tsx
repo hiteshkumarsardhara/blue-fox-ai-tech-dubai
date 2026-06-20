@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import { termsOfService } from "@/lib/legal";
 import { REGISTRATION_FEE } from "@/lib/site";
 import { registerAction } from "@/app/(auth)/actions";
+import { useTranslations } from "@/components/i18n/i18n-provider";
 
 const inputClass =
   "w-full rounded-lg border border-border bg-background/60 px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-2 transition-colors focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-ring/30";
@@ -24,6 +25,7 @@ const inputClass =
 type Step = 1 | 2 | 3;
 
 export function RegisterForm({ initialRef = "" }: { initialRef?: string }) {
+  const { t } = useTranslations();
   const [step, setStep] = useState<Step>(1);
   const [form, setForm] = useState({
     name: "",
@@ -100,37 +102,37 @@ export function RegisterForm({ initialRef = "" }: { initialRef?: string }) {
         {step === 1 && (
           <form onSubmit={handleDetails}>
             <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-              Create your account
+              {t("auth.createAccount")}
             </h1>
             <p className="mt-1.5 text-sm text-muted">
-              One-time{" "}
+              {t("auth.oneTime")}{" "}
               <span className="font-semibold text-foreground">${REGISTRATION_FEE}</span>{" "}
-              registration fee. Takes about a minute.
+              {t("auth.regFeeNote")}
             </p>
 
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
-              <Field label="Full name" required>
+              <Field label={t("auth.fullName")} required>
                 <input required type="text" placeholder="John Doe" value={form.name} onChange={update("name")} className={inputClass} />
               </Field>
-              <Field label="Email" required>
+              <Field label={t("auth.email")} required>
                 <input required type="email" placeholder="you@email.com" value={form.email} onChange={update("email")} className={inputClass} />
               </Field>
-              <Field label="Phone / WhatsApp" required>
+              <Field label={t("auth.phone")} required>
                 <input required type="tel" placeholder="+1 555 123 4567 (with country code)" value={form.phone} onChange={update("phone")} className={inputClass} />
               </Field>
-              <Field label="Country" required>
+              <Field label={t("auth.country")} required>
                 <input required type="text" placeholder="Your country" value={form.country} onChange={update("country")} className={inputClass} />
               </Field>
-              <Field label="Password" required>
+              <Field label={t("auth.password")} required>
                 <PasswordInput required placeholder="Min. 6 characters" value={form.password} onChange={update("password")} />
               </Field>
-              <Field label="Confirm password" required>
+              <Field label={t("auth.confirmPassword")} required>
                 <PasswordInput required placeholder="Re-enter password" value={form.confirm} onChange={update("confirm")} />
               </Field>
             </div>
 
             <div className="mt-4">
-              <Field label="Referral code (optional)">
+              <Field label={t("auth.referralOptional")}>
                 <input
                   type="text"
                   placeholder="Enter a code if you were referred"
@@ -141,7 +143,7 @@ export function RegisterForm({ initialRef = "" }: { initialRef?: string }) {
               </Field>
               {initialRef && (
                 <p className="mt-1.5 flex items-center gap-1.5 text-xs text-success">
-                  <CheckCircle2 className="h-3.5 w-3.5" /> Referral applied
+                  <CheckCircle2 className="h-3.5 w-3.5" /> {t("auth.referralApplied")}
                 </p>
               )}
             </div>
@@ -153,13 +155,13 @@ export function RegisterForm({ initialRef = "" }: { initialRef?: string }) {
             )}
 
             <Button type="submit" size="lg" className="mt-6 w-full">
-              Continue <ArrowRight className="h-4 w-4" />
+              {t("auth.continue")} <ArrowRight className="h-4 w-4" />
             </Button>
 
             <p className="mt-4 text-center text-sm text-muted">
-              Already have an account?{" "}
+              {t("auth.alreadyAccount")}{" "}
               <Link href="/login" className="font-medium text-primary hover:underline">
-                Log in
+                {t("auth.logIn")}
               </Link>
             </p>
           </form>

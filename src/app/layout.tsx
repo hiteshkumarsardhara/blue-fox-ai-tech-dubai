@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/site";
-import { getLocale } from "@/lib/i18n";
+import { getLocale, getDictionary } from "@/lib/i18n";
 import { isRtl } from "@/lib/i18n/config";
+import { I18nProvider } from "@/components/i18n/i18n-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -46,6 +47,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const locale = await getLocale();
+  const dict = await getDictionary(locale);
   return (
     <html
       lang={locale}
@@ -54,7 +56,9 @@ export default async function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-background text-foreground">
-        {children}
+        <I18nProvider dict={dict} locale={locale}>
+          {children}
+        </I18nProvider>
       </body>
     </html>
   );
