@@ -2,21 +2,34 @@ import type { Metadata } from "next";
 import { Container } from "@/components/ui/container";
 import { StatusBadge } from "@/components/portal/status-badge";
 import { CreditButton } from "@/components/admin/row-actions";
+import { AdminRentForm } from "@/components/admin/admin-rent-form";
 import { db } from "@/lib/db";
 import { formatCents } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Admin · Contracts" };
 
 export default async function AdminContracts() {
-  const contracts = await db.contract.findMany({
-    include: {
-      user: { select: { name: true, email: true } },
-      robot: { select: { name: true, tier: true } },
-      _count: { select: { earnings: true } },
-    },
-    orderBy: [{ status: "asc" }, { createdAt: "desc" }],
-    take: 100,
-  });
+  const [contracts, clients, robots] = await Promise.all([
+    db.contract.findMany({
+      include: {
+        user: { select: { name: true, email: true } },
+        robot: { select: { name: true, tier: true } },
+        _count: { select: { earnings: true } },
+      },
+      orderBy: [{ status: "asc" }, { createdAt: "desc" }],
+      take: 100,
+    }),
+    db.user.findMany({
+      where: { role: "client" },
+      select: { id: true, name: true, email: true },
+      orderBy: { createdAt: "desc" },
+    }),
+    db.robot.findMany({
+      where: { status: "active" },
+      select: { id: true, name: true, depositCents: true, tier: true },
+      orderBy: [{ sortOrder: "asc" }, { depositCents: "asc" }],
+    }),
+  ]);
 
   return (
     <Container className="max-w-7xl py-10">
@@ -25,6 +38,10 @@ export default async function AdminContracts() {
         Credit each month&apos;s fixed return to active robots. A contract completes after its
         final month.
       </p>
+
+      <div className="mt-8">
+        <AdminRentForm clients={clients} robots={robots} />
+      </div>
 
       <div className="mt-8 overflow-hidden rounded-2xl border border-border bg-surface">
         {contracts.length === 0 ? (

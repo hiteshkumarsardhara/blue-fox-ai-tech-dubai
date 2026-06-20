@@ -145,7 +145,12 @@ export async function rejectDeposit(depositId: string, adminId: string, note?: s
 
 /* ───────────────────────── Invest (rent a robot) ───────────────────── */
 
-export async function rentRobot(userId: string, robotId: string) {
+export async function rentRobot(
+  userId: string,
+  robotId: string,
+  opts: { actorId?: string; allowAnyTier?: boolean } = {},
+) {
+  const actorId = opts.actorId ?? userId;
   return db.$transaction(async (tx) => {
     const robot = await tx.robot.findUnique({ where: { id: robotId } });
     if (!robot || robot.status !== "active") throw new Error("Robot not available");
@@ -157,14 +162,17 @@ export async function rentRobot(userId: string, robotId: string) {
 
     // Strict upgrade only: a new robot must cost MORE than every package the
     // client has ever rented. This blocks downgrades, same-amount packages, and
-    // re-renting the same robot.
-    const contracts = await tx.contract.findMany({
-      where: { userId },
-      select: { principalCents: true },
-    });
-    const highestEver = contracts.reduce((m, c) => Math.max(m, c.principalCents), 0);
-    if (robot.depositCents <= highestEver)
-      throw new Error("You can only rent a higher package than any you've already rented.");
+    // re-renting the same robot. An admin can override the tier rule (but not
+    // the balance requirement) via opts.allowAnyTier.
+    if (!opts.allowAnyTier) {
+      const contracts = await tx.contract.findMany({
+        where: { userId },
+        select: { principalCents: true },
+      });
+      const highestEver = contracts.reduce((m, c) => Math.max(m, c.principalCents), 0);
+      if (robot.depositCents <= highestEver)
+        throw new Error("You can only rent a higher package than any you've already rented.");
+    }
 
     const start = new Date();
     const contract = await tx.contract.create({
@@ -190,7 +198,7 @@ export async function rentRobot(userId: string, robotId: string) {
       refId: contract.id,
       note: `Rented ${robot.name}`,
     });
-    await audit(tx, userId, "robot_rented", "Contract", contract.id);
+    await audit(tx, actorId, opts.allowAnyTier ? "robot_rented_admin" : "robot_rented", "Contract", contract.id);
 
     // Reward the referrer (if any) — never blocks the rental.
     await payReferralCommission(tx, userId, robot.depositCents, contract.id);

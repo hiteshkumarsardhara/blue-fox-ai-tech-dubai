@@ -11,6 +11,7 @@ import {
   rejectWithdrawal,
   approveKyc,
   rejectKyc,
+  rentRobot,
 } from "@/lib/ledger";
 import {
   notifyDepositConfirmed,
@@ -165,6 +166,21 @@ export async function rejectKycAction(kycId: string, reason: string): Promise<Re
     return { ok: true };
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "Failed." };
+  }
+}
+
+export async function adminRentAction(userId: string, robotId: string): Promise<Result> {
+  const admin = await requireStaff();
+  if (!admin) return { ok: false, error: "Not authorized." };
+  if (!userId || !robotId) return { ok: false, error: "Select a client and a robot." };
+  try {
+    // Admin override: bypass the strict-upgrade rule (balance still required).
+    await rentRobot(userId, robotId, { actorId: admin.id, allowAnyTier: true });
+    revalidatePath("/admin/contracts");
+    revalidatePath("/admin");
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Could not rent the robot." };
   }
 }
 
