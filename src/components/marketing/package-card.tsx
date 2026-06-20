@@ -59,10 +59,10 @@ export function PackageCard({ pkg }: { pkg: BotPackage }) {
         </span>
       )}
 
-      <div className="relative grid grid-cols-[112px_1fr] gap-4">
+      <div className="relative grid grid-cols-[180px_1fr] gap-4">
         {/* ── Product box (fills card height) ── */}
         <div
-          className="relative flex flex-col overflow-hidden rounded-xl p-3 text-white shadow-lg transition-transform duration-300 group-hover:scale-[1.03]"
+          className="relative flex flex-col overflow-hidden rounded-xl p-4 text-white shadow-lg transition-transform duration-300 group-hover:scale-[1.03]"
           style={{
             background: gold
               ? "linear-gradient(155deg,#f7b24a,#e8651c 55%,#7a2e00)"
@@ -79,19 +79,19 @@ export function PackageCard({ pkg }: { pkg: BotPackage }) {
             }}
           />
           <div className="relative flex flex-1 flex-col">
-            <p className="text-[8px] font-bold uppercase tracking-[0.15em] opacity-90">Blue Fox</p>
-            <p className="mt-0.5 text-3xl font-black leading-none">
+            <p className="text-[11px] font-bold uppercase tracking-[0.18em] opacity-90">Blue Fox</p>
+            <p className="mt-1 text-[2.75rem] font-black leading-none">
               {pkg.monthlyRoi}
-              <span className="text-base">%</span>
+              <span className="text-xl">%</span>
             </p>
-            <p className="text-[8px] font-semibold uppercase opacity-85">{t("home.cardPerMonth")}</p>
-            <p className="mt-2.5 text-[13px] font-extrabold uppercase leading-tight">{shortName}</p>
-            <div className="mt-1.5 space-y-0.5 text-[7.5px] font-medium uppercase leading-tight opacity-80">
+            <p className="text-[11px] font-semibold uppercase tracking-wide opacity-85">{t("home.cardPerMonth")}</p>
+            <p className="mt-3.5 text-lg font-extrabold uppercase leading-tight">{shortName}</p>
+            <div className="mt-2.5 space-y-1 text-[11px] font-semibold uppercase leading-tight opacity-80">
               {FOREX_PAIRS.map((p) => (
                 <p key={p}>{p}</p>
               ))}
             </div>
-            <span className="mt-auto inline-block w-fit rounded bg-white/25 px-1.5 py-0.5 text-[7.5px] font-bold">
+            <span className="mt-auto inline-block w-fit rounded bg-white/25 px-2.5 py-1 text-[11px] font-bold">
               MT4 / MT5
             </span>
           </div>
